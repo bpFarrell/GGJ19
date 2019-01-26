@@ -5,7 +5,7 @@ using UnityEngine;
 public class ResourceDisplay : MonoBehaviour
 {
     private MeshRenderer mr;
-    public Vector4 values = new Vector4(0f,0f,0f,0f);
+    private Vector4 values = new Vector4(0f,0f,0f,0f);
 
     private void Awake()
     {
