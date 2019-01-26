@@ -5,7 +5,7 @@ using UnityEngine;
 
 [CustomEditor(typeof(LevelManager))]
 public class LevelManagerEditor : Editor {
-    private static bool foldout = false;
+    private static bool foldout = true;
 
     public override void OnInspectorGUI()
     {
