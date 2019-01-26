@@ -6,20 +6,21 @@ using UnityEngine.Audio;
 public class InteractAudioController : MonoBehaviour
 {
     //private bool buttonPushed;
-    BaseButton debugButton;
+    private bool resourceChanged;
+    private 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        GameObject resources = GameObject.Find("StatusPannel");
+        ResourceManager debugButton = resources.GetComponent<ResourceManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        GameObject button = GameObject.Find("Button");
-        DebugButton debugButton = button.GetComponent<DebugButton>();
-        debugButton.Interact();
+        
+        if (resourceChanged == true)
         {
             Debug.Log("Fire the button audio!");
         }
