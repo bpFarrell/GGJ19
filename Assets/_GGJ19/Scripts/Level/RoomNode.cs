@@ -4,7 +4,7 @@ public class RoomNode : MonoBehaviour
 {
     // AssetManager
     // Oxygen Level
-    private float oxygenLevel = 0.0f;
+    private float oxygenModifier = Values.Oxygen.Base;
 
     // Adjacent Rooms
     //   1
@@ -40,16 +40,9 @@ public class RoomNode : MonoBehaviour
         }
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void Cleanup()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        oxygenModifier = Values.Oxygen.Base;
+        adjacentNodes = new RoomNode[4];
     }
 }
