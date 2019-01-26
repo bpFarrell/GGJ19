@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(transform.position,targetDir,out hit)
             && (hit.distance < targetDir.magnitude)||(hit.distance< moveBias)
-            && hit.distance!=0) {
+            && hit.distance!=0 && !hit.collider.isTrigger) {
                 transform.position = hit.point + hit.normal * moveBias;
         } else {
             transform.position += targetDir;
