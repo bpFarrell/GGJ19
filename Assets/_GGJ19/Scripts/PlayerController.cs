@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 1;
     public float turnSpeed = 1;
+    BaseButton currentButton;
     float moveBias = 0.01f;
     Rigidbody rb;
     // Start is called before the first frame update
@@ -17,6 +18,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButtonDown("Jump") && currentButton != null) {
+            currentButton.Interact();
+        }
+
         Vector3 dir = GetDir();
         if (dir.magnitude == 0) return;
         Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
@@ -54,5 +59,17 @@ public class PlayerController : MonoBehaviour
         }
 
         return dir;
+    }
+    private void OnTriggerEnter(Collider other) {
+        BaseButton button = other.gameObject.GetComponent<BaseButton>();
+        if (button == null) return;
+        currentButton = button;
+        button.OnEnter();
+    }
+    private void OnTriggerExit(Collider other) {
+        BaseButton button = other.gameObject.GetComponent<BaseButton>();
+        if (button == null) return;
+        currentButton = null;
+        button.OnLeave();
     }
 }
