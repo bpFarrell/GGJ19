@@ -67,7 +67,6 @@ public class RoomNode : MonoBehaviour
     }
     public void Cleanup()
     {
-        oxygenModifier = Values.Oxygen.BASE;
         adjacentNodes = new RoomNode[4];
     }
     ////////////////////////////////////////////
