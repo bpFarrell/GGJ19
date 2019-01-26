@@ -6,10 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 1;
     public float turnSpeed = 1;
+    float moveBias = 0.01f;
+    Rigidbody rb;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -20,7 +22,17 @@ public class PlayerController : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
         float faceScale = Vector3.Dot(transform.forward, dir.normalized);
-        transform.position += transform.forward * moveSpeed * Time.deltaTime *faceScale;
+        Vector3 targetDir = transform.forward * moveSpeed * Time.deltaTime * faceScale;
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position,targetDir,out hit)
+            && (hit.distance < targetDir.magnitude)||(hit.distance< moveBias)
+            && hit.distance!=0) {
+                transform.position = hit.point + hit.normal * moveBias;
+        } else {
+            transform.position += targetDir;
+        }
+        
+        
     }
     Vector3 GetDir() {
 
