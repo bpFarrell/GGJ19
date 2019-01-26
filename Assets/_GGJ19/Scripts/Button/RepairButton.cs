@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class RepairButton : BaseButton
 {
-    public override void Interact() {
+    public System.Action<RepairButton> RemoveFromRoom;
+    public void CleanUp() {
         Destroy(gameObject);
+    }
+    public override void Interact() {
+        if (RemoveFromRoom != null)
+            RemoveFromRoom(this);
+        CleanUp();
     }
 
     public override void OnEnter() {
