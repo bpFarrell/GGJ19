@@ -68,9 +68,9 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         }
     }
     private void Cleanup() {
-        redResource     = Values.Resources.RedBase;
-        blueResource    = Values.Resources.BlueBase;
-        greenResource   = Values.Resources.GreenBase;
-        yellowResource  = Values.Resources.YellowBase;
+        redResource     = Values.Resources.REDBASE;
+        blueResource    = Values.Resources.BLUEBASE;
+        greenResource   = Values.Resources.GREENBASE;
+        yellowResource  = Values.Resources.YELLOWBASE;
     }
 }
