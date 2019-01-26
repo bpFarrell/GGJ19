@@ -83,4 +83,4 @@ Material:
     - _GreenCol: {r: 0, g: 1, b: 0, a: 1}
     - _RedCol: {r: 1, g: 0, b: 0, a: 1}
     - _RedVal: {r: 1, g: 0, b: 0, a: 0}
-    - _Resource: {r: 1.16, g: 0.57, b: 0.35, a: 0}
+    - _Resource: {r: 1.16, g: 0.57, b: 0.5, a: 0.03}
