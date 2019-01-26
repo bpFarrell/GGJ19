@@ -4,7 +4,7 @@ using UnityEngine;
 [CustomEditor(typeof(RoomNode))]
 public class RoomNodeEditor : Editor
 {
-    private static bool foldout = true;
+    private static bool foldout = false;
 
     public override void OnInspectorGUI()
     {

@@ -10,6 +10,7 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         get { return s_rooms;  }
         private set { s_rooms = value; }
     }
+
     public void Initialize() {
         rooms = GetComponentsInChildren<RoomNode>().ToList();
         foreach (var room in rooms) {
@@ -17,8 +18,6 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         }
     }
     public void CreateHazard() {
-        int index = Random.Range(0, rooms.Count);
-        rooms[index].AddHazard(); 
         //choose room to create hazard in
     }
     public void Cleanup() {
