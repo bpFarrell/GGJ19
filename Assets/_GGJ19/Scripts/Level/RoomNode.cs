@@ -20,15 +20,30 @@ public class RoomNode : MonoBehaviour
         get { return LevelManager.Instance; }
     }
     // Oxygen Level
-    private float s_oxygen = Values.Oxygen.BASE;
-    private float s_oxygenMod = 0f;
+    private float s_oxygenMod {
+        get {
+            return (currentRepairs.Count == 0 ? 0 : Values.Oxygen.BREACH);
+        }
+    }
     public float oxygenModifier {
-        get { return s_oxygen + s_oxygenMod; }
-        private set { s_oxygenMod = value; }
+        get { return Values.Oxygen.BASE + s_oxygenMod; }
+    }
+    public List<RepairButton> currentRepairs = new List<RepairButton>();
+    public void AddHazard() {
+        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach"));
+        RepairButton rb = go.GetComponent<RepairButton>();
+        rb.RemoveFromRoom = RemoveHazard;
+        go.transform.position = new Vector3(
+            UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
+            -0.55f,
+            UnityEngine.Random.Range(bounds.min.z, bounds.max.z));
+        go.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
+    }
+    public void RemoveHazard(RepairButton rb) {
+        currentRepairs.Remove(rb);
     }
     // Asset Bounds
     public Bounds bounds;
-
     // Adjacent Rooms
     //   1
     // 0 * 2
@@ -57,7 +72,8 @@ public class RoomNode : MonoBehaviour
     }
     public void Cleanup()
     {
-        oxygenModifier = Values.Oxygen.BASE;
+
+        currentRepairs.Clear();
         adjacentNodes = new RoomNode[4];
     }
     ////////////////////////////////////////////
