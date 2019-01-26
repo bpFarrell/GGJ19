@@ -17,6 +17,8 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         }
     }
     public void CreateHazard() {
+        int index = Random.Range(0, rooms.Count);
+        rooms[index].AddHazard(); 
         //choose room to create hazard in
     }
     public void Cleanup() {
