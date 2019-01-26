@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 [System.Flags]
 public enum ResourceColor {
-    None = 0,
-    Red = 1,
-    Green = 2,
-    Blue = 4
+    NONE    = 0,
+    RED     = 1,
+    GREEN   = 2,
+    BLUE    = 4,
+    PORTAL  = 8
+        
 }
 public class ResourceManager : SingletonBehaviour<ResourceManager>
 {
-    public ResourceColor generationState = ResourceColor.None;
+    public ResourceColor generationState = ResourceColor.NONE;
     // Red Resource 
     private float s_redResource;
     public float redResource{
@@ -55,19 +57,27 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     		s_yellowResource = value;
     	}
     }
+    public void Initialize() {
+        generationState = ResourceColor.NONE;
+        redResource     = Values.Resources.REDBASE;
+        blueResource    = Values.Resources.BLUEBASE;
+        greenResource   = Values.Resources.GREENBASE;
+        yellowResource  = Values.Resources.YELLOWBASE;
+    }
     private void Update() {
         float speed = 0.05f;
-        if (generationState == ResourceColor.Red) {
+        if (generationState == ResourceColor.RED) {
             redResource += speed * Time.deltaTime;
         }
-        if (generationState == ResourceColor.Blue) {
+        if (generationState == ResourceColor.BLUE) {
             blueResource += speed * Time.deltaTime;
         }
-        if (generationState == ResourceColor.Green) {
+        if (generationState == ResourceColor.GREEN) {
             greenResource += speed * Time.deltaTime;
         }
     }
-    private void Cleanup() {
+    public void Cleanup() {
+        generationState = ResourceColor.NONE;
         redResource     = Values.Resources.REDBASE;
         blueResource    = Values.Resources.BLUEBASE;
         greenResource   = Values.Resources.GREENBASE;

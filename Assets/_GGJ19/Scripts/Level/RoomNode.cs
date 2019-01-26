@@ -55,14 +55,12 @@ public class RoomNode : MonoBehaviour
         FindNeighboors();
         GetBounds();
     }
-    public void Cleanup()
-    {
+    public void Cleanup() {
         oxygenModifier = Values.Oxygen.BASE;
         adjacentNodes = new RoomNode[4];
     }
     ////////////////////////////////////////////
-    private void GetBounds()
-    {
+    private void GetBounds() {
         bounds = new Bounds(transform.position, Vector3.zero);
         foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>()) {
             if (mr.gameObject == gameObject) continue;
