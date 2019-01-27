@@ -23,7 +23,15 @@ public class DebugButton : BaseButton
         Debug.Log("PUSHED THE BUTTON!");
         buttonInteract = GetComponent<AudioSource>();
         buttonInteract.PlayOneShot(buttonPress, 1.0f);
-        ResourceManager.Instance.generationState = rc;
+        Toggle();
+    }
+    private void Toggle() {
+        if (isRunning) {
+            ResourceManager.Instance.generationState &= ~rc; 
+        } else {
+            ResourceManager.Instance.generationState = ResourceManager.Instance.generationState |rc;
+
+        }
     }
     public override void OnEnter() {
         target.material = glow;
