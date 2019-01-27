@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
     // *** WE SHOULDN'T HAVE TO SCAN ALL ROOMS EACH UPDATE!!
     bool UpdateCurrentRoom()
     {
-        //for (int c=0; c<LevelManager.Instance.rooms.Count; c++)
         foreach (RoomNode node in LevelManager.Instance.rooms)
         {
             if (node.bounds.Contains(transform.position))
@@ -79,7 +78,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UpdateCurrentRoom();
+        UpdateCurrentRoom();
 
         if (Input.GetButtonDown("Jump") && currentButton != null) {
             currentButton.Interact();
