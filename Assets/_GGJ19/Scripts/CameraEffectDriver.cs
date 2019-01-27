@@ -9,6 +9,7 @@ public class CameraEffectDriver : MonoBehaviour
     AudioSource oxygenIndicator;
     public bool oxygenLow;
     public float effectonEQ;
+    public float effectonSpeed;
 
     private void Start()
     {
@@ -19,9 +20,10 @@ public class CameraEffectDriver : MonoBehaviour
         Graphics.Blit(source, destination, mat);
     }
     private void Update() {
+        if (ResourceManager.Instance == null)return;
         mat.SetFloat("_T", ResourceManager.Instance.greenResource * 2);
-        if (ResourceManager.Instance.greenResource <= 0.4f) {
-            effectonEQ = 1.0f - Mathf.InverseLerp(0.0f, 0.8f, ResourceManager.Instance.greenResource);
+        if (ResourceManager.Instance.greenResource >= 0.4f) {
+            effectonEQ = 1.0f - Mathf.Lerp(0.0f, 0.8f, ResourceManager.Instance.greenResource);
             PlayHeartBeat();
         }
         else
