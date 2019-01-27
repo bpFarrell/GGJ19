@@ -6,6 +6,8 @@
 		_T("T",Float)=0
 		_ColorOn("Color On",Color)=(1,1,1,1)
 		_ColorOff("Color Off",Color)=(.1,.1,.1,.1)
+		_OutEdge("OutEdge",Float) = 0.85
+		_InEdge("InEdge",Float) = 0.6
     }
     SubShader
     {
@@ -40,6 +42,8 @@
 			fixed4 _ColorOn;
 			fixed4 _ColorOff;
 			float _T;
+			float _InEdge;
+			float _OutEdge;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -53,7 +57,7 @@
 				float PI = 3.141529;
 
 				float2 uv = (i.uv-0.5)*2;
-				if(length(uv)>0.85)
+				if(length(uv)>_OutEdge||length(uv)<_InEdge)
 					discard;
 
 				_T=(_T-0.5)*-PI*2;
