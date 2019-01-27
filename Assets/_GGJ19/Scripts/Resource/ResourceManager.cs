@@ -21,7 +21,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     	private set{
     		s_redResource = value;
-    		Mathf.Clamp01(s_redResource);
+    		s_redResource = Mathf.Clamp01(s_redResource);
     	}
     }
     // Blue Resource
@@ -32,7 +32,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     	private set{
     		s_blueResource = value;
-    		Mathf.Clamp01(s_blueResource);
+    		s_blueResource = Mathf.Clamp01(s_blueResource);
     	}
     }
     // Oxygen
@@ -43,7 +43,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     	private set{
     		s_greenResource = value;
-    		Mathf.Clamp01(s_greenResource);
+    		s_greenResource = Mathf.Clamp01(s_greenResource);
     	}
     }
     // Power
@@ -54,7 +54,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     	private set{
     		s_yellowResource = value;
-    		Mathf.Clamp01(s_yellowResource);
+    		s_yellowResource = Mathf.Clamp01(s_yellowResource);
     	}
     }
     public void Initialize() {
@@ -64,7 +64,21 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         greenResource   = Values.Resources.GREENBASE;
         yellowResource  = Values.Resources.YELLOWBASE;
     }
+    public bool isOverLoaded {
+        get {
+            if (
+                (int)generationState != 0 ||
+                (int)generationState != 1 ||
+                (int)generationState != 2 ||
+                (int)generationState != 4 ||
+                (int)generationState != 8)
+                return true;
+            else
+                return false;
+        }
+    }
     private void Update() {
+        if (isOverLoaded) return;
         float speed = 0.05f;
         if (generationState == ResourceColor.RED) {
             redResource += speed * Time.deltaTime;
@@ -74,6 +88,9 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         }
         if (generationState == ResourceColor.GREEN) {
             greenResource += speed * Time.deltaTime;
+        }
+        if( generationState == ResourceColor.PORTAL) {
+            yellowResource += speed * Time.deltaTime;
         }
     }
     public void Cleanup() {

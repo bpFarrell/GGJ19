@@ -9,10 +9,11 @@ AudioSource:
   m_GameObject: {fileID: 2180327358800337527}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243654463687620182, guid: 1eafe35532576ed42b707ad94db3a1ce,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 72c309b63fa78e04a9b1645d786d7d0b, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.15
+  m_Volume: 0.08
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -115,42 +116,22 @@ PrefabInstance:
     - target: {fileID: 6498645001354654137, guid: fe3d68e1ef536fe469fef90898b5c41d,
         type: 3}
       propertyPath: m_Name
-      value: Breach
+      value: Breach (Audio)
       objectReference: {fileID: 0}
     - target: {fileID: 8512720773489689298, guid: fe3d68e1ef536fe469fef90898b5c41d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.63
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8512720773489689298, guid: fe3d68e1ef536fe469fef90898b5c41d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.859
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8512720773489689298, guid: fe3d68e1ef536fe469fef90898b5c41d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.21
-      objectReference: {fileID: 0}
-    - target: {fileID: 8512720773489689298, guid: fe3d68e1ef536fe469fef90898b5c41d,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8512720773489689298, guid: fe3d68e1ef536fe469fef90898b5c41d,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8512720773489689298, guid: fe3d68e1ef536fe469fef90898b5c41d,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8512720773489689298, guid: fe3d68e1ef536fe469fef90898b5c41d,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8512720773489689298, guid: fe3d68e1ef536fe469fef90898b5c41d,
         type: 3}

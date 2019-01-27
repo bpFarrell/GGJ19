@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-public class RoomNode : MonoBehaviour
-{
+public class RoomNode : MonoBehaviour {
     public enum RoomType {
         RED,
         BLUE,
@@ -14,35 +16,37 @@ public class RoomNode : MonoBehaviour
     }
     // Inspector Controls
     public RoomType type = RoomType.NOTHING;
-
+    public GameObject wallPrefab;
+    public GameObject doorPrefab;
+    public Transform geometryContainer;
+    public Transform hazardContainer;
+    public Transform interactionContainer;
+    // Material Controls
+    private Color targetLights = Values.Colors.NORMAL_LIGHTS;
+    private Color targetRoom = Values.Colors.NORMAL_ROOM;
+    private float roomColorSpeed = 1;
+    private Material mat;
     // LevelManager
     private LevelManager manager {
         get { return LevelManager.Instance; }
     }
     // Oxygen Level
     public float oxygenModifier {
-        get { return Values.Oxygen.BASE + (currentRepairs.Count == 0 ? 0 : Values.Oxygen.BREACH); }
+        get { return Values.Oxygen.BASE + (hasNeededRepairs ? 0 : Values.Oxygen.BREACH); }
     }
+    public bool hasNeededRepairs{
+        get { return currentRepairs.Count != 0; }
+    }
+    [HideInInspector]
     public List<RepairButton> currentRepairs = new List<RepairButton>();
-    public void AddHazard() {
-        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach"));
-        RepairButton rb = go.GetComponent<RepairButton>();
-        rb.RemoveFromRoom = RemoveHazard;
-        go.transform.position = new Vector3(
-            UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
-            -0.55f,
-            UnityEngine.Random.Range(bounds.min.z, bounds.max.z));
-        go.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
-    }
-    public void RemoveHazard(RepairButton rb) {
-        currentRepairs.Remove(rb);
-    }
     // Asset Bounds
+    [HideInInspector]
     public Bounds bounds;
     // Adjacent Rooms
     //   1
     // 0 * 2
     //   3
+    [HideInInspector]
     public RoomNode[] adjacentNodes = new RoomNode[4];
     public RoomNode left {
         get { return adjacentNodes[0]; }
@@ -63,13 +67,75 @@ public class RoomNode : MonoBehaviour
     // CRUD kinda
     public void Initialize() {
         FindNeighboors();
+        PrepMaterial();
+        BuildWalls();
         GetBounds();
     }
+
     public void Cleanup()
     {
         adjacentNodes = new RoomNode[4];
+        CleanWalls();
+        for(int x = 0; x < currentRepairs.Count; x++) {
+            Destroy(currentRepairs[x].gameObject);
+        }
+        currentRepairs.Clear();
     }
     ////////////////////////////////////////////
+    private void BuildWalls() {
+        if (wallPrefab == null || doorPrefab == null) return;
+        // Time to play...
+        WallOrDoor(top, 0f);
+        WallOrDoor(right, 90f);
+        WallOrDoor(bottom, 180f);
+        WallOrDoor(left, 270f);
+    }
+    private void PrepMaterial() {
+        MeshRenderer mr = geometryContainer.GetComponentInChildren<MeshRenderer>();
+        if (mr == null) return;
+        mat = new Material(mr.material);
+        if(Application.isPlaying) mr.material = mat;
+    }
+    private void UpdateLights() {
+        if (hasNeededRepairs) {
+            targetLights = Values.Colors.EMERGENCY_LIGHTS;
+            targetRoom = Values.Colors.EMERGENCY_ROOM;
+            roomColorSpeed = Values.Hazards.POWER_DOWN_SPEED;
+        } else {
+            targetLights = Values.Colors.NORMAL_LIGHTS;
+            targetRoom = Values.Colors.NORMAL_ROOM;
+            roomColorSpeed = Values.Hazards.POWER_UP_SPEED;
+        }
+    }
+    private void WallOrDoor(RoomNode go, float rotation) {
+        GameObject edge;
+        if (go == null)edge = Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, rotation, 0), geometryContainer);
+        else {
+            DoorTrigger script = (edge = Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), geometryContainer)).GetComponentInChildren<DoorTrigger>();
+            if(script != null) script.Initialize();
+        }
+        SetMaterials(edge);
+    }
+    private void SetMaterials(GameObject edge) {
+        MeshRenderer[] mrs = geometryContainer.GetComponentsInChildren<MeshRenderer>();
+        for(int x = 0; x < mrs.Length; x++) {
+            mrs[x].material = mat;
+        }
+    }
+    private void CleanWalls() {
+        for (int i = geometryContainer.childCount - 1; i >= 0; i--) {
+            Transform wall = geometryContainer.GetChild(i);
+            DoorTrigger script = wall.GetComponent<DoorTrigger>();
+            if (script != null) script.Cleanup();
+            if (wall.name.Contains("Floor")) continue;
+#if UNITY_EDITOR
+            if(!Application.isPlaying) DestroyImmediate(wall.gameObject);
+            else Destroy(wall.gameObject);
+#else
+            Destroy(wall);
+#endif
+        }
+    }
     private void GetBounds()
     {
         bounds = new Bounds(transform.position, Vector3.zero);
@@ -80,7 +146,7 @@ public class RoomNode : MonoBehaviour
     }
     public void FindNeighboors() {
         List<RoomNode> nearest = (from r in manager.rooms
-                    where r != this 
+                    where r != this && (transform.position - r.transform.position).magnitude < 10
                     orderby (transform.position - r.transform.position).magnitude
                     select r).Take(4).ToList();
 
@@ -99,6 +165,29 @@ public class RoomNode : MonoBehaviour
         left = nearest.OrderByDescending(x => Vector3.Dot(-Vector3.right, (x.transform.position - transform.position).normalized))
             .TakeWhile(x=> Vector3.Dot(-Vector3.right, (x.transform.position - transform.position).normalized) > 0.9f).LastOrDefault();
         if(left!=null)nearest.Remove(left);
+    }
+    public void AddHazard() {
+        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach (Audio)"),hazardContainer);
+        RepairButton rb = go.GetComponent<RepairButton>();
+        rb.RemoveFromRoom = RemoveHazard;
+        float nudge = 1.5f;
+        go.transform.position = new Vector3(
+            UnityEngine.Random.Range(bounds.min.x + nudge, bounds.max.x - nudge),
+            -0.55f,
+            UnityEngine.Random.Range(bounds.min.z + nudge, bounds.max.z - nudge));
+        go.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
+        currentRepairs.Add(rb);
+        UpdateLights();
+    }
+    public void RemoveHazard(RepairButton rb) {
+        currentRepairs.Remove(rb);
+        UpdateLights();
+    }
+    private void Update() {
+        Color temp = mat.GetColor("_LightColor");
+        mat.SetColor("_LightColor", Color.Lerp(temp, targetLights, roomColorSpeed * Time.deltaTime));
+        temp = mat.GetColor("_FullRoom");
+        mat.SetColor("_FullRoom", Color.Lerp(temp, targetRoom, roomColorSpeed * Time.deltaTime));
     }
     //////////////////////////////////////////////////////////////
     ///Gizmos

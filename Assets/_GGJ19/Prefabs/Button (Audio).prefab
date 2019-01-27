@@ -10,22 +10,22 @@ PrefabInstance:
     - target: {fileID: 5461752157447206759, guid: 636c3698e9c9f464ba8a7c06afc9cf7f,
         type: 3}
       propertyPath: m_Name
-      value: Button
+      value: Button (Audio)
       objectReference: {fileID: 0}
     - target: {fileID: 5461752157447206754, guid: 636c3698e9c9f464ba8a7c06afc9cf7f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5461752157447206754, guid: 636c3698e9c9f464ba8a7c06afc9cf7f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5461752157447206754, guid: 636c3698e9c9f464ba8a7c06afc9cf7f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5461752157447206754, guid: 636c3698e9c9f464ba8a7c06afc9cf7f,
         type: 3}
@@ -72,16 +72,6 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 9094875517044478063}
-    - target: {fileID: 3138397104228727049, guid: 636c3698e9c9f464ba8a7c06afc9cf7f,
-        type: 3}
-      propertyPath: OutputAudioMixerGroup
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3138397104228727049, guid: 636c3698e9c9f464ba8a7c06afc9cf7f,
-        type: 3}
-      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 636c3698e9c9f464ba8a7c06afc9cf7f, type: 3}
 --- !u!23 &9094875517044478063 stripped

@@ -15,8 +15,8 @@ public class LevelManager : SingletonBehaviour<LevelManager>
     }
     public void Initialize()
     {
-        doorTriggerPrefab = transform.Find("DoorTriggerPrefab").gameObject;
-        doorTriggerPrefab.SetActive(false);
+        //doorTriggerPrefab = transform.Find("DoorTriggerPrefab").gameObject;
+        //doorTriggerPrefab.SetActive(false);
 
         //if (doorTriggerPool == null) doorTriggerPool = new List<GameObject>();
 
@@ -26,33 +26,33 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         }
 
         //Add door triggers
-        foreach (var room in rooms)
-        {
-            //only add door triggers for top and right do prevent doubling up
-            if (room.top != null)
-            {
-                GameObject newTrigger = Instantiate(doorTriggerPrefab);
-                newTrigger.transform.SetParent(room.transform);
-                newTrigger.transform.rotation = Quaternion.Euler(0, 90, 0);
-                newTrigger.transform.position = (room.bounds.center + room.top.bounds.center) / 2;
-                newTrigger.SetActive(true);
-                DoorTrigger trig = newTrigger.GetComponent<DoorTrigger>();
-                trig.doorOneSide = room;
-                trig.doorOtherSide = room.top;
-                Debug.Log("Added door trigger " + (trig.doorOneSide == null ? "null" : trig.doorOneSide.name) + " to " + (trig.doorOtherSide == null ? "null" : trig.doorOtherSide.name));
-            }
-            if (room.right != null)
-            {
-                GameObject newTrigger = Instantiate(doorTriggerPrefab);
-                newTrigger.transform.SetParent(room.transform);
-                newTrigger.transform.position = (room.bounds.center + room.right.bounds.center) / 2;
-                newTrigger.SetActive(true);
-                DoorTrigger trig = newTrigger.GetComponent<DoorTrigger>();
-                trig.doorOneSide = room;
-                trig.doorOtherSide = room.right;
-                Debug.Log("Added door trigger " + (trig.doorOneSide == null ? "null" : trig.doorOneSide.name) + " to " + (trig.doorOtherSide == null ? "null" : trig.doorOtherSide.name));
-            }
-        }
+        //foreach (var room in rooms)
+        //{
+        //    //only add door triggers for top and right do prevent doubling up
+        //    if (room.top != null)
+        //    {
+        //        GameObject newTrigger = Instantiate(doorTriggerPrefab);
+        //        newTrigger.transform.SetParent(room.transform);
+        //        newTrigger.transform.rotation = Quaternion.Euler(0, 90, 0);
+        //        newTrigger.transform.position = (room.bounds.center + room.top.bounds.center) / 2;
+        //        newTrigger.SetActive(true);
+        //        DoorTrigger trig = newTrigger.GetComponent<DoorTrigger>();
+        //        trig.doorOneSide = room;
+        //        trig.doorOtherSide = room.top;
+        //        Debug.Log("Added door trigger " + (trig.doorOneSide == null ? "null" : trig.doorOneSide.name) + " to " + (trig.doorOtherSide == null ? "null" : trig.doorOtherSide.name));
+        //    }
+        //    if (room.right != null)
+        //    {
+        //        GameObject newTrigger = Instantiate(doorTriggerPrefab);
+        //        newTrigger.transform.SetParent(room.transform);
+        //        newTrigger.transform.position = (room.bounds.center + room.right.bounds.center) / 2;
+        //        newTrigger.SetActive(true);
+        //        DoorTrigger trig = newTrigger.GetComponent<DoorTrigger>();
+        //        trig.doorOneSide = room;
+        //        trig.doorOtherSide = room.right;
+        //        Debug.Log("Added door trigger " + (trig.doorOneSide == null ? "null" : trig.doorOneSide.name) + " to " + (trig.doorOtherSide == null ? "null" : trig.doorOtherSide.name));
+        //    }
+        //}
     }
     public void CreateHazard() {
         int index = Random.Range(0, rooms.Count);
@@ -65,9 +65,16 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         }
         rooms = null;
     }
+    private void Update() {
+
+        if (Time.frameCount % 120 == 0) {
+            CreateHazard();
+        }
+    }
 }
 
 // Hazards: Break into class?
+// Not used
 class HazardWeight {
     int[] weights;
 
