@@ -115,7 +115,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
             }
             panAnimator.Play("Pan out", -1, panOutTime / panOutDuration);
             Color color = hullMat.color;
-            color.a = panOutTime / panOutDuration;
+            color.a = Mathf.Clamp((panOutTime / panOutDuration - .2f) * 5/4f, 0, 1);
             hullMat.color = color;
         }
 

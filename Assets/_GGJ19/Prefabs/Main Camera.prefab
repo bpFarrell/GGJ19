@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3836616226788165390}
   m_LocalRotation: {x: 0.0000015199184, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.2, y: -1.5, z: 11}
-  m_LocalScale: {x: 22.289764, y: 22.289764, z: 22.289764}
+  m_LocalScale: {x: 36.162914, y: 36.162914, z: 36.162914}
   m_Children: []
   m_Father: {fileID: 3836616226854432898}
   m_RootOrder: 1
@@ -196,11 +196,7 @@ MonoBehaviour:
   player: {fileID: 0}
   offset: {x: 0, y: 6, z: 0}
   roomWeight: 0.2
-  followSpeed: 0.5
-  panoutTarget: {fileID: 0}
-  animator: {fileID: 0}
-  animController: {fileID: 0}
-  panOutAnimation: {fileID: 0}
+  followSpeed: 0.2
 --- !u!114 &7305436562024080287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 3836616226897074723}
   m_LocalRotation: {x: 0.0000015199184, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.10000038, y: -1, z: 15.1}
-  m_LocalScale: {x: 43.99992, y: 32.78194, z: 32.78194}
+  m_LocalScale: {x: 61.828686, y: 46.06518, z: 46.06518}
   m_Children: []
   m_Father: {fileID: 3836616226854432898}
   m_RootOrder: 3
