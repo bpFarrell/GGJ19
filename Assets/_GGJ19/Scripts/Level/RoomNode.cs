@@ -75,10 +75,15 @@ public class RoomNode : MonoBehaviour
     }
     private void WallOrDoor(RoomNode go, float rotation) {
         if (go == null) Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform);
-        else Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform);
+        else {
+            DoorTrigger script = Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform).GetComponentInChildren<DoorTrigger>();
+            if(script != null) script.Initialize();
+        }
     }
     private void CleanWalls() {
         foreach (Transform wall in transform) {
+            DoorTrigger script = wall.GetComponent<DoorTrigger>();
+            if (script != null) script.Cleanup();
             Destroy(wall);
         }
     }
