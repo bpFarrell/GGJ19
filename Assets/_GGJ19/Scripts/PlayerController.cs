@@ -44,6 +44,26 @@ public class PlayerController : MonoBehaviour
         return Direction.Right; //pretend error states are go right
     }
 
+    bool UpdateCurrentRoom2()
+    {
+        //get room with closest center
+        float dist = 10000000;
+        RoomNode closest = null;
+        foreach (RoomNode node in LevelManager.Instance.rooms)
+        {
+            float d = (transform.position - node.bounds.center).sqrMagnitude;
+            if (d < dist)
+            {
+                dist = d;
+                closest = node;
+            }
+        }
+
+        if (closest == currentRoom) return false;
+        currentRoom = closest;
+        return true;
+    }
+
     //return  true if room just changed
     // *** WE SHOULDN'T HAVE TO SCAN ALL ROOMS EACH UPDATE!!
     bool UpdateCurrentRoom()
@@ -80,7 +100,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateCurrentRoom();
+        UpdateCurrentRoom2();
+
         Vector3 pos = transform.position;
         pos.y = yPos;
         transform.position = pos;
