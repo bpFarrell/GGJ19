@@ -317,6 +317,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hull
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4c7020ebaf4e80b4f9fd1db0fb706153, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4c7020ebaf4e80b4f9fd1db0fb706153, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.2

@@ -13,9 +13,6 @@ public class ActualCameraFollow : MonoBehaviour
     Quaternion defaultRotation;
 
     public Transform panoutTarget;
-    public Animator animator;
-    public RuntimeAnimatorController animController;
-    public AnimationClip panOutAnimation;
 
     public CutSceneManager cutSceneManager;
 
@@ -25,12 +22,7 @@ public class ActualCameraFollow : MonoBehaviour
     {
         defaultRotation = transform.rotation;
 
-        if (panoutTarget != null)
-        {
-            animator = panoutTarget.gameObject.GetComponent<Animator>();
-            animController = animator.runtimeAnimatorController;
-            panOutAnimation = animController.animationClips[0];
-        }
+
 
         targetObject = player.transform;
     }
