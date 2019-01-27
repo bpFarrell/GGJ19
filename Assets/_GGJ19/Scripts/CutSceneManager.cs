@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CutSceneManager : MonoBehaviour
+//public class CutSceneManager : MonoBehaviour
+public class CutSceneManager : SingletonBehaviour<CutSceneManager>
 {
     public GameObject scaffold;
     public GameObject otherShip;
@@ -126,19 +127,23 @@ public class CutSceneManager : MonoBehaviour
             //{
             //}
 
-            if (panOutTime > panOutDuration *.75f)
+            if (panOutTime > panOutDuration * .75f)
             {
                 if (dockingPhase == DockingPhase.PanOut) {
-                     //we are panned out enough, start ship and scaffold animations
+                    //we are panned out enough, start ship and scaffold animations
                     dockingPhase = DockingPhase.Dock;
                     scaffoldAnimator.Play("Scaffold Connect", -1, 0);
                     scaffoldAnimator.speed = 1;
                     otherShipAnimator.Play("Dock", -1, 0);
                     otherShipAnimator.speed = 1;
                 }
-                
+
                 dockingPanTime += Time.deltaTime;
-                if (dockingPanTime >= dockingPanDuration) EndOfDock();
+                if (dockingPanTime >= dockingPanDuration)
+                {
+                    ChangeState(GameState.NormalPlay);
+                    //EndOfDock();
+                }
             }
         }
 
@@ -162,6 +167,14 @@ public class CutSceneManager : MonoBehaviour
                     flyOffPhase = FlyOffPhase.FlyOff;
                     otherShipAnimator.Play("FlyToPortal", -1, 0);
                     otherShipAnimator.speed = 1;
+                }
+            }
+            else if (flyOffPhase == FlyOffPhase.FlyOff)
+            {
+                flyOffTime += Time.deltaTime;
+                if (flyOffTime > flyOffDuration)
+                {
+                    ChangeState(GameState.ShipDocking);
                 }
             }
         }
