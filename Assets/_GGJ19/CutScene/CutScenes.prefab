@@ -155,11 +155,9 @@ MonoBehaviour:
   hull: {fileID: 1082388002541277934}
   hullMat: {fileID: 0}
   gameState: 0
-  panAnimator: {fileID: 0}
-  animController: {fileID: 0}
-  panOutAnimation: {fileID: 0}
   panDebugTime: -1
   dockingPanDuration: 4
+  scaffoldOffDuration: 1
 --- !u!1 &1082388002950989312
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +229,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8115230981117185508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082388003076560092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9edc582b0d207b41a0de8b316342147, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportTime: 60
+  blueTicSec: 0
+  redTicSec: 0
+  greenTicSec: 0
 --- !u!1001 &1082388002414560534
 PrefabInstance:
   m_ObjectHideFlags: 0
