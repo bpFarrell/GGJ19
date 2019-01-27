@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 1;
     public float turnSpeed = 1;
+    private float yPos;
     BaseButton currentButton;
     float moveBias = 0.01f;
     Rigidbody rb;
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        yPos = transform.position.y;
     }
 
     void Start()
@@ -79,6 +81,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         UpdateCurrentRoom();
+        Vector3 pos = transform.position;
+        pos.y = yPos;
+        transform.position = pos;
 
         if (Input.GetButtonDown("Jump") && currentButton != null) {
             currentButton.Interact();
