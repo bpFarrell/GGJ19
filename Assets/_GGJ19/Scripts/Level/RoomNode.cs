@@ -20,13 +20,8 @@ public class RoomNode : MonoBehaviour
         get { return LevelManager.Instance; }
     }
     // Oxygen Level
-    private float s_oxygenMod {
-        get {
-            return (currentRepairs.Count == 0 ? 0 : Values.Oxygen.BREACH);
-        }
-    }
     public float oxygenModifier {
-        get { return Values.Oxygen.BASE + s_oxygenMod; }
+        get { return Values.Oxygen.BASE + (currentRepairs.Count == 0 ? 0 : Values.Oxygen.BREACH); }
     }
     public List<RepairButton> currentRepairs = new List<RepairButton>();
     public void AddHazard() {
@@ -72,8 +67,6 @@ public class RoomNode : MonoBehaviour
     }
     public void Cleanup()
     {
-
-        currentRepairs.Clear();
         adjacentNodes = new RoomNode[4];
     }
     ////////////////////////////////////////////

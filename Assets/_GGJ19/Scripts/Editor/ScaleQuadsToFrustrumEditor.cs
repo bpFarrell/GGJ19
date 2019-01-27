@@ -12,15 +12,17 @@ public class ScaleQuadsToFrustrumEditor : Editor
 
         if (foldout = EditorGUILayout.Foldout(foldout, "Debug"))
         {
-            if (GUILayout.Button("Get Quads")) {
+            if (GUILayout.Button("Get Quads"))
+            {
                 script.GatherQuads();
             }
-            if (GUILayout.Button("Size Quads")) {
+            if (GUILayout.Button("Size Quads"))
+            {
                 script.GatherQuads();
                 script.ResizeQuadsToCamera();
             }
             EditorGUI.BeginDisabledGroup(true);
-            
+
             EditorGUI.EndDisabledGroup();
         }
     }

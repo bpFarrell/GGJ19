@@ -10,6 +10,7 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         get { return s_rooms;  }
         private set { s_rooms = value; }
     }
+
     public void Initialize() {
         rooms = GetComponentsInChildren<RoomNode>().ToList();
         foreach (var room in rooms) {
