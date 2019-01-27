@@ -9,15 +9,78 @@ public class PlayerController : MonoBehaviour
     BaseButton currentButton;
     float moveBias = 0.01f;
     Rigidbody rb;
-    // Start is called before the first frame update
+
+    public RoomNode currentRoom;
+    public RoomNode previousRoom;
+    public RoomNode nextRoom;
+
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
+    void Start()
+    {
+        LevelManager.Instance.Initialize();
+
+        if (LevelManager.Instance.rooms.Count != 0)
+            currentRoom = LevelManager.Instance.rooms[0];
+        
+        Debug.Log("player current room is " + (currentRoom == null ? "null" : "not null, hooray!"));
+
+    }
+
+    enum Direction { Up, Down, Right, Left, None }
+    Direction GetDirection(Vector3 v)
+    {
+        float value = (float)((Mathf.Atan2(v.z, v.x) / Mathf.PI) * 180f);
+        if (value < 0) value += 360f;
+        if (value > 45 && value < 135) return Direction.Up;
+        if (value > 135 && value < 225) return Direction.Left;
+        if (value > 225 && value < 315) return Direction.Down;
+        return Direction.Right; //pretend error states are go right
+    }
+
+    //return  true if room just changed
+    // *** WE SHOULDN'T HAVE TO SCAN ALL ROOMS EACH UPDATE!!
+    bool UpdateCurrentRoom()
+    {
+        //for (int c=0; c<LevelManager.Instance.rooms.Count; c++)
+        foreach (RoomNode node in LevelManager.Instance.rooms)
+        {
+            if (node.bounds.Contains(transform.position))
+            {
+                if (currentRoom == node) return false;
+                Debug.Log("player in room "+node.name);
+                previousRoom = currentRoom;
+                currentRoom = node;
+                return true;
+            }
+        }
+        if (currentRoom != null)
+        {
+            //we are transitioning to a new room, figure out which
+            Direction dir = GetDirection(transform.position - currentRoom.bounds.center);
+            if (dir == Direction.Up) nextRoom = currentRoom.top;
+            else if (dir == Direction.Down) nextRoom = currentRoom.bottom;
+            else if (dir == Direction.Left) nextRoom = currentRoom.left;
+            else if (dir == Direction.Right) nextRoom = currentRoom.right;
+            previousRoom = currentRoom;
+            currentRoom = null;
+            Debug.Log("Not in a room, going into space!");
+
+            // Need to open doors of previous and next rooms
+        }
+        //Debug.Log("Not in a room, lost in space!");
+        return false;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        UpdateCurrentRoom();
+
         if (Input.GetButtonDown("Jump") && currentButton != null) {
             currentButton.Interact();
         }
