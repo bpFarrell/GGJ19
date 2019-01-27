@@ -3,7 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Meta ("Meta", 2D) = "white" {}
+        _Meta ("Meta", 2D) = "black" {}
 		_LightColor("LightColor",Color)= (1,1,1,1)
 		_BaseColor("BaseColor",Color)= (1,1,1,1)
 		_FullRoom("FullRoom",Color)= (1,1,1,1)
@@ -83,6 +83,8 @@
 
 
                 fixed4 col = tex2D(_MainTex, i.uv);
+				if(col.a<0.5)
+					discard;
 				fixed4 meta = tex2D(_Meta,i.uv);
 				fixed4 light = meta.r*(sin(_Time.x*600)*0.3+0.8) * _LightColor;
 				fixed4 energy = meta.b*(power) * fixed4(0.85,0.85,0.3,1.0);
