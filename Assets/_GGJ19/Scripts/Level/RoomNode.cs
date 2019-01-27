@@ -69,6 +69,10 @@ public class RoomNode : MonoBehaviour {
     {
         adjacentNodes = new RoomNode[4];
         CleanWalls();
+        for(int x = 0; x < currentRepairs.Count; x++) {
+            Destroy(currentRepairs[x].gameObject);
+        }
+        currentRepairs.Clear();
     }
     ////////////////////////////////////////////
     private void BuildWalls() {
