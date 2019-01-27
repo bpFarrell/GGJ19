@@ -10,15 +10,21 @@ public class ActualCameraFollow : MonoBehaviour
     public float roomWeight = .05f;
     public float followSpeed = .95f;
 
+    Quaternion defaultRotation;
+
     public Transform panoutTarget;
     public Animator animator;
     public RuntimeAnimatorController animController;
     public AnimationClip panOutAnimation;
 
+    public CutSceneManager cutSceneManager;
+
     Vector3 target_pos;
 
     void Start()
     {
+        defaultRotation = transform.rotation;
+
         if (panoutTarget != null)
         {
             animator = panoutTarget.gameObject.GetComponent<Animator>();
@@ -46,7 +52,7 @@ public class ActualCameraFollow : MonoBehaviour
 
     }
 
-    void Update()
+    void LateUpdate()
     {
         Vector3 room_center = GetRoomCenter();
         //Debug.Log("room center: " + room_center + ", player pos: "+targetObject.position);
@@ -56,8 +62,19 @@ public class ActualCameraFollow : MonoBehaviour
                                 targetObject.position.y + offset.y,
                                 Mathf.Lerp(room_center.z, targetObject.position.z + offset.z, roomWeight)
                         );
-                    
+        Quaternion target_rot = defaultRotation;
 
+        if (cutSceneManager.IsPanning())
+        {
+            float weight = 0;
+            Quaternion sceneRot;
+            Vector3 scenecam = cutSceneManager.CameraTarget(out weight, out sceneRot);
+            target_pos = Vector3.Lerp(scenecam, target_pos, weight);
+
+            target_rot = Quaternion.Lerp(sceneRot, defaultRotation, weight);
+        }
+
+        transform.rotation = target_rot;
         transform.position = Vector3.Lerp(transform.position, target_pos, followSpeed);
     }
 }
