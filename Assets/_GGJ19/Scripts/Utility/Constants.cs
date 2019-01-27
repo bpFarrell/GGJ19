@@ -11,29 +11,37 @@
         public const float GREENBASE        = 1;
         public const float YELLOWBASE       = 1;
 
-        public const float REDBASERATE      = 0.1f;
-        public const float BLUEBASERATE     = 0.1f;
-        public const float GREENBASERATE    = 0.1f;
-        public const float YELLOWBASERATE   = 0.1f;
+        public const float REDBASEDECAYRATE         = 0f;
+        public const float BLUEBASEDECAYRATE        = 0.03f;
+        public const float GREENBASEDECAYRATE       = 0.01f;
+        public const float YELLOWBASEDECAYRATE      = 0f;
 
+        public const float REDBASERECHARGERATE      = 0.1f;
+        public const float BLUEBASERECARGERATE      = 0.1f;
+        public const float GREENBASERECHARGERATE    = 0.1f;
+        public const float YELLOWBASERECHARGERATE   = 0;
 
-        public const float REDMODRATE       = 0.1f;
-        public const float BLUEMODRATE      = 0.1f;
-        public const float GREENMODRATE     = 0.1f;
-        public const float YELLOWMODRATE    = 0.1f;
+        public static float REDMODRATE{
+            get {
+                return DockedShip.instance == null ? 0 : DockedShip.instance.redTicSec;
+            }
+        }
+        public static float BLUEMODRATE{
+            get {
+                return DockedShip.instance == null ? 0 : DockedShip.instance.blueTicSec;
+            }
+        }
+        public static float GREENMODRATE {
+            get {
+                return DockedShip.instance == null ? 0 : DockedShip.instance.greenTicSec;
+            }
+        }
+        public static float YELLOWMODRATE {
+            get {
+                return 0;
+            }
+        }
 
-        public static float REDRATE {
-            get { return REDBASERATE + REDMODRATE; }
-        }
-        public static float BLUERATE {
-            get { return BLUEBASERATE + BLUEMODRATE; }
-        }
-        public static float GREENRATE {
-            get { return GREENBASERATE + GREENMODRATE; }
-        }
-        public static float YELLOWRATE {
-            get { return YELLOWBASERATE + YELLOWMODRATE; }
-        }
     }
     public class Hazards
     {
