@@ -50,11 +50,12 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     private float s_yellowResource;
     public float yellowResource{
     	get{
-    		return s_yellowResource;
-    	}
+            return DockedShip.instance == null ? 1 : s_yellowResource/DockedShip.instance.teleportTime;
+
+        }
     	private set{
     		s_yellowResource = value;
-    		s_yellowResource = Mathf.Clamp01(s_yellowResource);
+            s_yellowResource = Mathf.Clamp(0, DockedShip.instance == null ? 0 : DockedShip.instance.teleportTime, s_yellowResource);
     	}
     }
     public void Initialize() {
@@ -72,9 +73,9 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
                 (int)generationState != 2 ||
                 (int)generationState != 4 ||
                 (int)generationState != 8)
-                return true;
-            else
                 return false;
+            else
+                return true;
         }
     }
     private void Update() {
