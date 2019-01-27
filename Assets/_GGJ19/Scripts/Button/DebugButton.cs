@@ -7,7 +7,7 @@ public class DebugButton : BaseButton
     public MeshRenderer target;
     public Material glow;
     public Material noGlow;
-    public ResourceColor rc = ResourceColor.None;
+    public ResourceColor rc = ResourceColor.NONE;
     public bool isInRange = false;
     public override void Interact() {
         Debug.Log("PUSHED THE BUTTON!");
