@@ -173,7 +173,7 @@ public class RoomNode : MonoBehaviour {
         float nudge = 1.5f;
         go.transform.position = new Vector3(
             UnityEngine.Random.Range(bounds.min.x + nudge, bounds.max.x - nudge),
-            -0.55f,
+            0,
             UnityEngine.Random.Range(bounds.min.z + nudge, bounds.max.z - nudge));
         go.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
         currentRepairs.Add(rb);
