@@ -9,6 +9,11 @@ public class RepairButton : BaseButton
         Destroy(gameObject);
     }
     public override void Interact() {
+        if( ResourceManager.Instance.redResource> Values.Hazards.REPAIRCOST) {
+            ResourceManager.Instance.redResource -= Values.Hazards.REPAIRCOST;
+        } else {
+            return;
+        }
         if (RemoveFromRoom != null)
             RemoveFromRoom(this);
         CleanUp();
