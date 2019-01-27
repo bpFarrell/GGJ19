@@ -64,7 +64,21 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         greenResource   = Values.Resources.GREENBASE;
         yellowResource  = Values.Resources.YELLOWBASE;
     }
+    public bool isOverLoaded {
+        get {
+            if (
+                (int)generationState != 0 ||
+                (int)generationState != 1 ||
+                (int)generationState != 2 ||
+                (int)generationState != 4 ||
+                (int)generationState != 8)
+                return true;
+            else
+                return false;
+        }
+    }
     private void Update() {
+        if (isOverLoaded) return;
         float speed = 0.05f;
         if (generationState == ResourceColor.RED) {
             redResource += speed * Time.deltaTime;
@@ -74,6 +88,9 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         }
         if (generationState == ResourceColor.GREEN) {
             greenResource += speed * Time.deltaTime;
+        }
+        if( generationState == ResourceColor.PORTAL) {
+            yellowResource += speed * Time.deltaTime;
         }
     }
     public void Cleanup() {

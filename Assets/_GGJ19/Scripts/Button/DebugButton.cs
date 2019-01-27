@@ -9,6 +9,12 @@ public class DebugButton : BaseButton
     public Material noGlow;
     public ResourceColor rc = ResourceColor.NONE;
     public bool isInRange = false;
+    public bool isRunning {
+        get { return (ResourceManager.Instance.generationState & rc) == rc; }
+    }
+    public bool isExclusivlyRunning {
+        get { return (ResourceManager.Instance.generationState == rc); }
+    }
 
     public AudioClip buttonPress;
     AudioSource buttonInteract;
