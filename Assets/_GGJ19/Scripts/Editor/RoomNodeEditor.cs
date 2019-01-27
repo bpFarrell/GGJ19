@@ -8,6 +8,7 @@ public class RoomNodeEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        DrawDefaultInspector();
         RoomNode script = (RoomNode)target;
 
         if (foldout=EditorGUILayout.Foldout(foldout, "Debug"))

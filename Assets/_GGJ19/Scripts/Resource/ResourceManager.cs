@@ -21,7 +21,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     	private set{
     		s_redResource = value;
-    		Mathf.Clamp01(s_redResource);
+    		s_redResource = Mathf.Clamp01(s_redResource);
     	}
     }
     // Blue Resource
@@ -32,7 +32,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     	private set{
     		s_blueResource = value;
-    		Mathf.Clamp01(s_blueResource);
+    		s_blueResource = Mathf.Clamp01(s_blueResource);
     	}
     }
     // Oxygen
@@ -43,7 +43,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     	private set{
     		s_greenResource = value;
-    		Mathf.Clamp01(s_greenResource);
+    		s_greenResource = Mathf.Clamp01(s_greenResource);
     	}
     }
     // Power
@@ -54,7 +54,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     	private set{
     		s_yellowResource = value;
-    		Mathf.Clamp01(s_yellowResource);
+    		s_yellowResource = Mathf.Clamp01(s_yellowResource);
     	}
     }
     public void Initialize() {
