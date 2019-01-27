@@ -24,6 +24,7 @@ public class DebugButton : BaseButton
     AudioSource buttonInteract;
 
     private void Awake() {
+        if (outputRenderer == null) return;
         outputMat = new Material(outputRenderer.material);
         outputRenderer.material = outputMat;
         outputMat.SetColor("_ColorOn", colorOn);
@@ -36,7 +37,7 @@ public class DebugButton : BaseButton
         Toggle();
         if(rc== ResourceColor.PORTAL) {
             if (ResourceManager.Instance.yellowResource == 1 && DockedShip.instance != null) {
-                //CutSceneManager.
+                CutSceneManager.Instance.ChangeState(CutSceneManager.GameState.ShipLeaving);
             }
         }
     }
@@ -45,7 +46,6 @@ public class DebugButton : BaseButton
             ResourceManager.Instance.generationState &= ~rc; 
         } else {
             ResourceManager.Instance.generationState = ResourceManager.Instance.generationState |rc;
-
         }
     }
     public override void OnEnter() {

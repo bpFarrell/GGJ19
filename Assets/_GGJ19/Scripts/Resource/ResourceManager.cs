@@ -19,7 +19,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	get{
     		return s_redResource;
     	}
-    	private set{
+    	set{
     		s_redResource = value;
     		s_redResource = Mathf.Clamp01(s_redResource);
     	}
@@ -82,16 +82,20 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         if (isOverLoaded) return;
         float speed = 0.05f;
         if (generationState == ResourceColor.RED) {
-            redResource += speed * Time.deltaTime;
-        }
+            redResource += Values.Resources.REDBASERECHARGERATE * Time.deltaTime;
+        } 
         if (generationState == ResourceColor.BLUE) {
-            blueResource += speed * Time.deltaTime;
+            blueResource += Values.Resources.BLUEBASERECARGERATE * Time.deltaTime;
+        } else {
+            blueResource -= Values.Resources.BLUEBASEDECAYRATE * Time.deltaTime;
         }
         if (generationState == ResourceColor.GREEN) {
-            greenResource += speed * Time.deltaTime;
+            greenResource += Values.Resources.GREENBASERECHARGERATE * Time.deltaTime;
+        } else {
+            greenResource -= Values.Resources.GREENBASEDECAYRATE * Time.deltaTime;
         }
-        if( generationState == ResourceColor.PORTAL) {
-            yellowResource += speed * Time.deltaTime;
+        if ( generationState == ResourceColor.PORTAL) {
+            yellowResource += Values.Resources.YELLOWBASERECHARGERATE * Time.deltaTime;
         }
     }
     public void Cleanup() {

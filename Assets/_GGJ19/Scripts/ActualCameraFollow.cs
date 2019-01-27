@@ -6,15 +6,14 @@ public class ActualCameraFollow : MonoBehaviour
 {
     public PlayerController player;
     Transform targetObject;
-    public Vector3 offset;
-    public float roomWeight = .05f;
-    public float followSpeed = .95f;
+    public Vector3 offset = new Vector3(0,10,0);
+    public float roomWeight = .2f;
+    public float followSpeed = .2f;
 
     Quaternion defaultRotation;
 
-    public Transform panoutTarget;
-
-    public CutSceneManager cutSceneManager;
+    Transform panoutTarget;
+    CutSceneManager cutSceneManager;
 
     Vector3 target_pos;
 
@@ -22,6 +21,8 @@ public class ActualCameraFollow : MonoBehaviour
     {
         defaultRotation = transform.rotation;
 
+        if (cutSceneManager == null) cutSceneManager = CutSceneManager.Instance;
+        if (panoutTarget == null) panoutTarget = cutSceneManager.transform.Find("PanOutTarget");
 
 
         targetObject = player.transform;
@@ -30,19 +31,22 @@ public class ActualCameraFollow : MonoBehaviour
     Vector3 GetRoomCenter()
     {
         if (player.currentRoom != null) return player.currentRoom.bounds.center;
-        if (player.currentRoom == null && player.previousRoom != null && player.nextRoom != null)
-        {
-            //we are in an airlock between rooms
-            if ((player.transform.position-player.previousRoom.bounds.center).sqrMagnitude < (player.transform.position - player.nextRoom.bounds.center).sqrMagnitude)
-            {
-                return player.previousRoom.bounds.center;
-            } else return player.nextRoom.bounds.center;
-        }
         return targetObject.position;
 
-        //return new Vector3(5 * ((int)(targetObject.position.x / 5)), targetObject.position.y, 5 * ((int)(targetObject.position.z / 5)));
-
+        //-----old, when rooms don't butt right up against each other:
+        //if (player.currentRoom != null) return player.currentRoom.bounds.center;
+        //if (player.currentRoom == null && player.previousRoom != null && player.nextRoom != null)
+        //{
+        //    //we are in an airlock between rooms
+        //    if ((player.transform.position-player.previousRoom.bounds.center).sqrMagnitude < (player.transform.position - player.nextRoom.bounds.center).sqrMagnitude)
+        //    {
+        //        return player.previousRoom.bounds.center;
+        //    } else return player.nextRoom.bounds.center;
+        //}
+        //return targetObject.position;
     }
+
+
 
     void LateUpdate()
     {

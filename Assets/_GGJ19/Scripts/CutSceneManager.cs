@@ -22,9 +22,9 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
     Panning panningDir;
     float panOutTime;
     float panOutDuration = 2;
-    public Animator panAnimator;
-    public RuntimeAnimatorController animController;
-    public AnimationClip panOutAnimation;
+    Animator panAnimator;
+    RuntimeAnimatorController animController;
+    AnimationClip panOutAnimation;
     public float panDebugTime = -1;
 
 
@@ -32,7 +32,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
     enum DockingPhase { PanOut, Dock, PanIn }
     DockingPhase dockingPhase;
     float dockingPanTime;
-    public float dockingPanDuration = 4;
+    public float dockingPanDuration = 2;
     Animator scaffoldAnimator;
     float scaffoldSpeed;
 
@@ -45,7 +45,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
     enum FlyOffPhase { Wait, RetractScaffold, FlyOff, Done }
     FlyOffPhase flyOffPhase;
     float scaffoldOffTime;
-    float scaffoldOffDuration = 1;
+    public float scaffoldOffDuration = 1;
 
 
     void Start()
@@ -64,7 +64,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
 
         //other ship
         otherShipAnimator = otherShip.GetComponent<Animator>();
-        flyOffDuration = 10;
+        flyOffDuration = 2;
 
     }
 
@@ -115,7 +115,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
             }
             panAnimator.Play("Pan out", -1, panOutTime / panOutDuration);
             Color color = hullMat.color;
-            color.a = panOutTime / panOutDuration;
+            color.a = Mathf.Clamp((panOutTime / panOutDuration - .2f) * 5/4f, 0, 1);
             hullMat.color = color;
         }
 
