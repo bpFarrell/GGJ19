@@ -27,9 +27,11 @@ Material:
         m_Texture: {fileID: 2800000, guid: 5c9aed6252887ae4a8705e9f2e4cbb12, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
+    m_Floats:
+    - _Frequency: 0.4
     m_Colors:
     - _BaseColor: {r: 0.7779634, g: 1, b: 0.7490196, a: 1}
     - _EnergyPower: {r: 0, g: 2, b: 0, a: 2}
     - _EnergySpeed: {r: 0, g: -30, b: 1, a: -30}
+    - _FullRoom: {r: 1, g: 1, b: 1, a: 1}
     - _LightColor: {r: 0.31132078, g: 0.27693066, b: 0.057271283, a: 0.53333336}
