@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class RoomNode : MonoBehaviour {
     public enum RoomType {
@@ -88,9 +91,10 @@ public class RoomNode : MonoBehaviour {
         WallOrDoor(left, 270f);
     }
     private void PrepMaterial() {
-        MeshRenderer mr = GetComponentInChildren<MeshRenderer>();
+        MeshRenderer mr = geometryContainer.GetComponentInChildren<MeshRenderer>();
+        if (mr == null) return;
         mat = new Material(mr.material);
-        mr.material = mat;
+        if(Application.isPlaying) mr.material = mat;
     }
     private void UpdateLights() {
         if (hasNeededRepairs) {
@@ -119,10 +123,17 @@ public class RoomNode : MonoBehaviour {
         }
     }
     private void CleanWalls() {
-        foreach (Transform wall in geometryContainer) {
+        for (int i = geometryContainer.childCount - 1; i >= 0; i--) {
+            Transform wall = geometryContainer.GetChild(i);
             DoorTrigger script = wall.GetComponent<DoorTrigger>();
             if (script != null) script.Cleanup();
+            if (wall.name.Contains("Floor")) continue;
+#if UNITY_EDITOR
+            if(!Application.isPlaying) DestroyImmediate(wall.gameObject);
+            else Destroy(wall.gameObject);
+#else
             Destroy(wall);
+#endif
         }
     }
     private void GetBounds()
