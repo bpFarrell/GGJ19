@@ -14,6 +14,8 @@ public class RoomNode : MonoBehaviour
     }
     // Inspector Controls
     public RoomType type = RoomType.NOTHING;
+    public GameObject wallPrefab;
+    public GameObject doorPrefab;
 
     // LevelManager
     private LevelManager manager {
@@ -23,26 +25,16 @@ public class RoomNode : MonoBehaviour
     public float oxygenModifier {
         get { return Values.Oxygen.BASE + (currentRepairs.Count == 0 ? 0 : Values.Oxygen.BREACH); }
     }
+    [HideInInspector]
     public List<RepairButton> currentRepairs = new List<RepairButton>();
-    public void AddHazard() {
-        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach"));
-        RepairButton rb = go.GetComponent<RepairButton>();
-        rb.RemoveFromRoom = RemoveHazard;
-        go.transform.position = new Vector3(
-            UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
-            -0.55f,
-            UnityEngine.Random.Range(bounds.min.z, bounds.max.z));
-        go.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
-    }
-    public void RemoveHazard(RepairButton rb) {
-        currentRepairs.Remove(rb);
-    }
     // Asset Bounds
+    [HideInInspector]
     public Bounds bounds;
     // Adjacent Rooms
     //   1
     // 0 * 2
     //   3
+    [HideInInspector]
     public RoomNode[] adjacentNodes = new RoomNode[4];
     public RoomNode left {
         get { return adjacentNodes[0]; }
@@ -63,13 +55,33 @@ public class RoomNode : MonoBehaviour
     // CRUD kinda
     public void Initialize() {
         FindNeighboors();
+        BuildWalls();
         GetBounds();
     }
+
     public void Cleanup()
     {
         adjacentNodes = new RoomNode[4];
+        CleanWalls();
     }
     ////////////////////////////////////////////
+    private void BuildWalls() {
+        if (wallPrefab == null || doorPrefab == null) return;
+        // Time to play...
+        WallOrDoor(top, 0f);
+        WallOrDoor(right, 90f);
+        WallOrDoor(bottom, 180f);
+        WallOrDoor(left, 270f);
+    }
+    private void WallOrDoor(RoomNode go, float rotation) {
+        if (go == null) Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform);
+        else Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform);
+    }
+    private void CleanWalls() {
+        foreach (Transform wall in transform) {
+            Destroy(wall);
+        }
+    }
     private void GetBounds()
     {
         bounds = new Bounds(transform.position, Vector3.zero);
@@ -80,7 +92,7 @@ public class RoomNode : MonoBehaviour
     }
     public void FindNeighboors() {
         List<RoomNode> nearest = (from r in manager.rooms
-                    where r != this 
+                    where r != this && (transform.position - r.transform.position).magnitude < 10
                     orderby (transform.position - r.transform.position).magnitude
                     select r).Take(4).ToList();
 
@@ -99,6 +111,19 @@ public class RoomNode : MonoBehaviour
         left = nearest.OrderByDescending(x => Vector3.Dot(-Vector3.right, (x.transform.position - transform.position).normalized))
             .TakeWhile(x=> Vector3.Dot(-Vector3.right, (x.transform.position - transform.position).normalized) > 0.9f).LastOrDefault();
         if(left!=null)nearest.Remove(left);
+    }
+    public void AddHazard() {
+        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach"));
+        RepairButton rb = go.GetComponent<RepairButton>();
+        rb.RemoveFromRoom = RemoveHazard;
+        go.transform.position = new Vector3(
+            UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
+            -0.55f,
+            UnityEngine.Random.Range(bounds.min.z, bounds.max.z));
+        go.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
+    }
+    public void RemoveHazard(RepairButton rb) {
+        currentRepairs.Remove(rb);
     }
     //////////////////////////////////////////////////////////////
     ///Gizmos

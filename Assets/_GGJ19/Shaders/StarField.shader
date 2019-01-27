@@ -177,10 +177,11 @@ float3 snoise_grad(float2 v)
 }
             fixed4 frag (v2f i) : SV_Target
             {
-				float t = snoise(i.worldPos.xz*i.worldPos.y*0.2);
+				float2 p = float2(i.worldPos.x + _MainTex_ST.z, i.worldPos.z + _MainTex_ST.w);
+				float t = snoise(p.xy*i.worldPos.y*0.2);
 				float s = i.worldPos.y;
 				t=smoothstep(0.8,1.0,t)*0.5*-s*0.3;
-				float n = snoise(i.worldPos.xz*i.worldPos.y*0.001);
+				float n = snoise(p.xy*i.worldPos.y*0.001);
 				n=n*0.2+0.2;
 				float f = (t+n*abs(s*0.03));
                 return lerp(_Dark,_Light,f);
