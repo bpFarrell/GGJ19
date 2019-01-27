@@ -22,10 +22,10 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        LevelManager.Instance.Initialize();
+        //LevelManager.Instance.Initialize();
 
-        if (LevelManager.Instance.rooms.Count != 0)
-            currentRoom = LevelManager.Instance.rooms[0];
+        //if (LevelManager.Instance.rooms.Count != 0)
+        //    currentRoom = LevelManager.Instance.rooms[0];
         
         Debug.Log("player current room is " + (currentRoom == null ? "null" : "not null, hooray!"));
 
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateCurrentRoom();
+        //UpdateCurrentRoom();
 
         if (Input.GetButtonDown("Jump") && currentButton != null) {
             currentButton.Interact();
