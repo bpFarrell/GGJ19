@@ -12,9 +12,8 @@ public class ActualCameraFollow : MonoBehaviour
 
     Quaternion defaultRotation;
 
-    public Transform panoutTarget;
-
-    public CutSceneManager cutSceneManager;
+    Transform panoutTarget;
+    CutSceneManager cutSceneManager;
 
     Vector3 target_pos;
 
@@ -22,6 +21,8 @@ public class ActualCameraFollow : MonoBehaviour
     {
         defaultRotation = transform.rotation;
 
+        if (cutSceneManager == null) cutSceneManager = CutSceneManager.Instance;
+        if (panoutTarget == null) panoutTarget = cutSceneManager.transform.Find("PanOutTarget");
 
 
         targetObject = player.transform;
