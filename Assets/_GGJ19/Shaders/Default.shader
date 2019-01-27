@@ -5,6 +5,7 @@
         _MainTex ("Texture", 2D) = "white" {}
         _Meta ("Meta", 2D) = "white" {}
 		_LightColor("LightColor",Color)= (1,1,1,1)
+		_Frequency("Light Frequency", Range (.1, 2.)) = 1.
 		_BaseColor("BaseColor",Color)= (1,1,1,1)
 		_FullRoom("FullRoom",Color)= (1,1,1,1)
 		_EnergySpeed("EnergySpeed",Vector)=(1,1,1,1)
@@ -47,6 +48,7 @@
 			fixed4 _EnergyPower;
 			fixed4 _EnergySpeed;
 			fixed4 _FullRoom;
+			float _Frequency;
 
             v2f vert (appdata v)
             {
@@ -84,7 +86,7 @@
 
                 fixed4 col = tex2D(_MainTex, i.uv);
 				fixed4 meta = tex2D(_Meta,i.uv);
-				fixed4 light = meta.r*(sin(_Time.x*600)*0.3+0.8) * _LightColor;
+				fixed4 light = meta.r*(sin(_Time.x*(_Frequency*600))*0.25+1.2) * _LightColor;
 				fixed4 energy = meta.b*(power) * fixed4(0.85,0.85,0.3,1.0);
 				fixed4 baseColor = lerp(col,col*_BaseColor,meta.g)*_FullRoom;
                 return (baseColor)+light+energy;
