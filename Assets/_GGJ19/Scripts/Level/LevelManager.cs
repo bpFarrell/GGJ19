@@ -74,6 +74,7 @@ public class LevelManager : SingletonBehaviour<LevelManager>
 }
 
 // Hazards: Break into class?
+// Not used
 class HazardWeight {
     int[] weights;
 
