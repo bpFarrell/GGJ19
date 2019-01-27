@@ -65,6 +65,12 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         }
         rooms = null;
     }
+    private void Update() {
+
+        if (Time.frameCount % 120 == 0) {
+            CreateHazard();
+        }
+    }
 }
 
 // Hazards: Break into class?

@@ -132,7 +132,15 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other) {
         BaseButton button = other.gameObject.GetComponent<BaseButton>();
         if (button == null) return;
-        currentButton = null;
+        if (currentButton == button) {
+            currentButton = null;
+        }
         button.OnLeave();
+    }
+    private void OnTriggerStay(Collider other) {
+        if (currentButton != null) return;
+        BaseButton button = other.gameObject.GetComponent<BaseButton>();
+        if (button == null) return;
+        currentButton = button;
     }
 }

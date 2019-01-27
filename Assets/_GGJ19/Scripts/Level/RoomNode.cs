@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoomNode : MonoBehaviour
-{
+public class RoomNode : MonoBehaviour {
     public enum RoomType {
         RED,
         BLUE,
@@ -16,14 +15,20 @@ public class RoomNode : MonoBehaviour
     public RoomType type = RoomType.NOTHING;
     public GameObject wallPrefab;
     public GameObject doorPrefab;
-
+    private Color targetLights = Values.Colors.NORMAL_LIGHTS;
+    private Color targetRoom = Values.Colors.NORMAL_ROOM;
+    private float roomColorSpeed = 1;
+    private Material mat;
     // LevelManager
     private LevelManager manager {
         get { return LevelManager.Instance; }
     }
     // Oxygen Level
     public float oxygenModifier {
-        get { return Values.Oxygen.BASE + (currentRepairs.Count == 0 ? 0 : Values.Oxygen.BREACH); }
+        get { return Values.Oxygen.BASE + (hasNeededRepairs ? 0 : Values.Oxygen.BREACH); }
+    }
+    public bool hasNeededRepairs{
+        get { return currentRepairs.Count != 0; }
     }
     [HideInInspector]
     public List<RepairButton> currentRepairs = new List<RepairButton>();
@@ -55,6 +60,7 @@ public class RoomNode : MonoBehaviour
     // CRUD kinda
     public void Initialize() {
         FindNeighboors();
+        PrepMaterial();
         BuildWalls();
         GetBounds();
     }
@@ -73,11 +79,35 @@ public class RoomNode : MonoBehaviour
         WallOrDoor(bottom, 180f);
         WallOrDoor(left, 270f);
     }
+    private void PrepMaterial() {
+        MeshRenderer mr = GetComponentInChildren<MeshRenderer>();
+        mat = new Material(mr.material);
+        mr.material = mat;
+    }
+    private void UpdateLights() {
+        if (hasNeededRepairs) {
+            targetLights = Values.Colors.EMERGENCY_LIGHTS;
+            targetRoom = Values.Colors.EMERGENCY_ROOM;
+            roomColorSpeed = Values.Hazards.POWER_DOWN_SPEED;
+        } else {
+            targetLights = Values.Colors.NORMAL_LIGHTS;
+            targetRoom = Values.Colors.NORMAL_ROOM;
+            roomColorSpeed = Values.Hazards.POWER_UP_SPEED;
+        }
+    }
     private void WallOrDoor(RoomNode go, float rotation) {
-        if (go == null) Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform);
+        GameObject edge;
+        if (go == null)edge = Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform);
         else {
-            DoorTrigger script = Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform).GetComponentInChildren<DoorTrigger>();
+            DoorTrigger script = (edge =Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform)).GetComponentInChildren<DoorTrigger>();
             if(script != null) script.Initialize();
+        }
+        SetMaterials(edge);
+    }
+    private void SetMaterials(GameObject edge) {
+        MeshRenderer[] mrs = GetComponentsInChildren<MeshRenderer>();
+        for(int x = 0; x < mrs.Length; x++) {
+            mrs[x].material = mat;
         }
     }
     private void CleanWalls() {
@@ -121,14 +151,24 @@ public class RoomNode : MonoBehaviour
         GameObject go = (GameObject)Instantiate ( Resources.Load("Breach"));
         RepairButton rb = go.GetComponent<RepairButton>();
         rb.RemoveFromRoom = RemoveHazard;
+        float nudge = 1.5f;
         go.transform.position = new Vector3(
-            UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
+            UnityEngine.Random.Range(bounds.min.x + nudge, bounds.max.x - nudge),
             -0.55f,
-            UnityEngine.Random.Range(bounds.min.z, bounds.max.z));
+            UnityEngine.Random.Range(bounds.min.z + nudge, bounds.max.z - nudge));
         go.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
+        currentRepairs.Add(rb);
+        UpdateLights();
     }
     public void RemoveHazard(RepairButton rb) {
         currentRepairs.Remove(rb);
+        UpdateLights();
+    }
+    private void Update() {
+        Color temp = mat.GetColor("_LightColor");
+        mat.SetColor("_LightColor", Color.Lerp(temp, targetLights, roomColorSpeed * Time.deltaTime));
+        temp = mat.GetColor("_FullRoom");
+        mat.SetColor("_FullRoom", Color.Lerp(temp, targetRoom, roomColorSpeed * Time.deltaTime));
     }
     //////////////////////////////////////////////////////////////
     ///Gizmos

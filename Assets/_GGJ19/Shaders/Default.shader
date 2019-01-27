@@ -6,6 +6,7 @@
         _Meta ("Meta", 2D) = "white" {}
 		_LightColor("LightColor",Color)= (1,1,1,1)
 		_BaseColor("BaseColor",Color)= (1,1,1,1)
+		_FullRoom("FullRoom",Color)= (1,1,1,1)
 		_EnergySpeed("EnergySpeed",Vector)=(1,1,1,1)
 		_EnergyPower("EnergyPower",Vector)=(1,1,1,1)
     }
@@ -45,6 +46,7 @@
 			fixed4 _BaseColor;
 			fixed4 _EnergyPower;
 			fixed4 _EnergySpeed;
+			fixed4 _FullRoom;
 
             v2f vert (appdata v)
             {
@@ -84,7 +86,7 @@
 				fixed4 meta = tex2D(_Meta,i.uv);
 				fixed4 light = meta.r*(sin(_Time.x*600)*0.3+0.8) * _LightColor;
 				fixed4 energy = meta.b*(power) * fixed4(0.85,0.85,0.3,1.0);
-				fixed4 baseColor = lerp(col,col*_BaseColor,meta.g);
+				fixed4 baseColor = lerp(col,col*_BaseColor,meta.g)*_FullRoom;
                 return (baseColor)+light+energy;
             }
             ENDCG
