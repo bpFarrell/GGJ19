@@ -7,7 +7,7 @@ public class LevelManager : SingletonBehaviour<LevelManager>
 {
     public GameObject doorTriggerPrefab;
     //List<GameObject> doorTriggerPool; <- should use this for big random levels
-
+    float nextBreachAt = 0;
     private List<RoomNode> s_rooms = null;
     public List<RoomNode> rooms {
         get { return s_rooms;  }
@@ -66,8 +66,9 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         rooms = null;
     }
     private void Update() {
-
-        if (Time.frameCount % 120 == 0) {
+        if (Time.time > nextBreachAt) {
+            nextBreachAt = Time.time + Random.Range(5, 15);
+            if(true)//GameState == inGame
             CreateHazard();
         }
     }

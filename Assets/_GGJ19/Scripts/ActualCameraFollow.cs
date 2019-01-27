@@ -7,8 +7,8 @@ public class ActualCameraFollow : MonoBehaviour
     public PlayerController player;
     Transform targetObject;
     public Vector3 offset = new Vector3(0,10,0);
-    public float roomWeight = .05f;
-    public float followSpeed = .95f;
+    public float roomWeight = .2f;
+    public float followSpeed = .2f;
 
     Quaternion defaultRotation;
 
