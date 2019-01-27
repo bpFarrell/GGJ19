@@ -107,7 +107,7 @@ public class RoomNode : MonoBehaviour {
         GameObject edge;
         if (go == null)edge = Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, rotation, 0), geometryContainer);
         else {
-            DoorTrigger script = (edge =Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform)).GetComponentInChildren<DoorTrigger>();
+            DoorTrigger script = (edge = Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), geometryContainer)).GetComponentInChildren<DoorTrigger>();
             if(script != null) script.Initialize();
         }
         SetMaterials(edge);
@@ -156,7 +156,7 @@ public class RoomNode : MonoBehaviour {
         if(left!=null)nearest.Remove(left);
     }
     public void AddHazard() {
-        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach"),hazardContainer);
+        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach (Audio)"),hazardContainer);
         RepairButton rb = go.GetComponent<RepairButton>();
         rb.RemoveFromRoom = RemoveHazard;
         float nudge = 1.5f;
