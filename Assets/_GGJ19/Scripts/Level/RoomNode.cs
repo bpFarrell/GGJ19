@@ -15,6 +15,10 @@ public class RoomNode : MonoBehaviour {
     public RoomType type = RoomType.NOTHING;
     public GameObject wallPrefab;
     public GameObject doorPrefab;
+    public Transform geometryContainer;
+    public Transform hazardContainer;
+    public Transform interactionContainer;
+    // Material Controls
     private Color targetLights = Values.Colors.NORMAL_LIGHTS;
     private Color targetRoom = Values.Colors.NORMAL_ROOM;
     private float roomColorSpeed = 1;
@@ -97,7 +101,7 @@ public class RoomNode : MonoBehaviour {
     }
     private void WallOrDoor(RoomNode go, float rotation) {
         GameObject edge;
-        if (go == null)edge = Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform);
+        if (go == null)edge = Instantiate(wallPrefab, transform.position, Quaternion.Euler(0, rotation, 0), geometryContainer);
         else {
             DoorTrigger script = (edge =Instantiate(doorPrefab, transform.position, Quaternion.Euler(0, rotation, 0), transform)).GetComponentInChildren<DoorTrigger>();
             if(script != null) script.Initialize();
@@ -105,13 +109,13 @@ public class RoomNode : MonoBehaviour {
         SetMaterials(edge);
     }
     private void SetMaterials(GameObject edge) {
-        MeshRenderer[] mrs = GetComponentsInChildren<MeshRenderer>();
+        MeshRenderer[] mrs = geometryContainer.GetComponentsInChildren<MeshRenderer>();
         for(int x = 0; x < mrs.Length; x++) {
             mrs[x].material = mat;
         }
     }
     private void CleanWalls() {
-        foreach (Transform wall in transform) {
+        foreach (Transform wall in geometryContainer) {
             DoorTrigger script = wall.GetComponent<DoorTrigger>();
             if (script != null) script.Cleanup();
             Destroy(wall);
@@ -148,7 +152,7 @@ public class RoomNode : MonoBehaviour {
         if(left!=null)nearest.Remove(left);
     }
     public void AddHazard() {
-        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach"));
+        GameObject go = (GameObject)Instantiate ( Resources.Load("Breach"),hazardContainer);
         RepairButton rb = go.GetComponent<RepairButton>();
         rb.RemoveFromRoom = RemoveHazard;
         float nudge = 1.5f;
