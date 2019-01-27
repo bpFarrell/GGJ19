@@ -65,12 +65,13 @@ public class RoomNode : MonoBehaviour
         FindNeighboors();
         GetBounds();
     }
-    public void Cleanup() {
-        currentRepairs.Clear();
+    public void Cleanup()
+    {
         adjacentNodes = new RoomNode[4];
     }
     ////////////////////////////////////////////
-    private void GetBounds() {
+    private void GetBounds()
+    {
         bounds = new Bounds(transform.position, Vector3.zero);
         foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>()) {
             if (mr.gameObject == gameObject) continue;

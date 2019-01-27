@@ -9,6 +9,10 @@ public class GameManager : SingletonBehaviour<GameManager>
     public ResourceManager resourceManager {
         get { return ResourceManager.Instance; }
     }
+    private void Start()
+    {
+        Initialize();
+    }
     public void Initialize() {
         if (levelManager == null && levelPrefab != null) Instantiate(levelPrefab);
         levelManager.Initialize();

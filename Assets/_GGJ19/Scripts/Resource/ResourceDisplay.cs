@@ -21,6 +21,7 @@ public class ResourceDisplay : MonoBehaviour
         }
     }
     private void GetValues() {
+        if (ResourceManager.Instance == null) return;
         values[0] = ResourceManager.Instance.redResource;
         values[1] = ResourceManager.Instance.greenResource;
         values[2] = ResourceManager.Instance.blueResource;
