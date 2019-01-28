@@ -17,18 +17,18 @@ public class ActualCameraFollow : MonoBehaviour
 
     Vector3 target_pos;
 
-    void Awake()
+    private void Awake()
     {
-        GameManager.Instance.OnPlayEnter += ReallyStart;
+        GameManager.Instance.OnPlayEnter += (x, y) => { enabled = true; };
+        GameManager.Instance.OnPlayExit += (x) => { enabled = false; };
     }
-
-    void ReallyStart(GameState state, GameState previous)
+    private void OnEnable()
     {
         defaultRotation = transform.rotation;
 
         if (cutSceneManager == null) cutSceneManager = CutSceneManager.Instance;
-        if (panoutTarget == null) panoutTarget = cutSceneManager.transform.Find("PanOutTarget");
-
+        if (panoutTarget == null) panoutTarget = CutSceneManager.Instance.transform.Find("PanOutTarget");
+        if(PlayerController.Instance != null) player = PlayerController.Instance;
 
         targetObject = player.transform;
     }

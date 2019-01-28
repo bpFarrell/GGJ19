@@ -8,12 +8,15 @@ public class GameManagerEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        DrawDefaultInspector();
         GameManager script = (GameManager)target;
 
         EditorGUILayout.LabelField("Required: ");
-        EditorGUI.indentLevel = 1;
-        script.levelPrefab = EditorGUILayout.ObjectField("Level Prefab", script.levelPrefab, typeof(GameObject), false) as GameObject;
-        EditorGUI.indentLevel = 0;
+        //EditorGUI.indentLevel = 1;
+        //script.levelPrefab = EditorGUILayout.ObjectField("Level Prefab", script.levelPrefab, typeof(GameObject), false) as GameObject;
+        //script.playerPrefab = EditorGUILayout.ObjectField("Player Prefab", script.playerPrefab, typeof(GameObject), false) as GameObject;
+        //script.cutScenePrefab= EditorGUILayout.ObjectField("CutScene Prefab", script.cutScenePrefab, typeof(GameObject), false) as GameObject;
+        //EditorGUI.indentLevel = 0;
 
         if (foldout = EditorGUILayout.Foldout(foldout, "Debug"))
         {
