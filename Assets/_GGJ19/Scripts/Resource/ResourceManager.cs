@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 [System.Flags]
 public enum ResourceColor {
     NONE    = 0,
@@ -30,7 +31,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	get{
     		return s_blueResource;
     	}
-    	private set{
+    	set{
     		s_blueResource = value;
     		s_blueResource = Mathf.Clamp01(s_blueResource);
     	}
@@ -41,7 +42,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	get{
     		return s_greenResource;
     	}
-    	private set{
+    	set{
     		s_greenResource = value;
     		s_greenResource = Mathf.Clamp01(s_greenResource);
     	}
@@ -53,7 +54,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
             return DockedShip.instance == null ? 1 : s_yellowResource/DockedShip.instance.teleportTime;
 
         }
-    	private set{
+    	set{
     		s_yellowResource = value;
             s_yellowResource = Mathf.Clamp(0, DockedShip.instance == null ? 0 : DockedShip.instance.teleportTime, s_yellowResource);
     	}
