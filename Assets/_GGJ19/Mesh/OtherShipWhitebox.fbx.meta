@@ -6,9 +6,12 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: No Name
+    2100002: Body
+    2100004: Engine
     2300000: //RootNode
     3300000: //RootNode
     4300000: Sphere
+    4300002: Sphere.002
   externalObjects: {}
   materials:
     importMaterials: 1
