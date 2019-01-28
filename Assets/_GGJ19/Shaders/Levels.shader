@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _MainTex ("Albedo (RGB)", 2D) = "black" {}
 		_MetaTex ("Meta Mask", 2D) = "black" {}
 		_Resource  ("Resources", Vector) = (0,0,0,0)
 		_RedCol  ("Resource 1 Color", Color)  = (1,0,0,0)
@@ -73,7 +73,7 @@
                 // apply fog
 				//return fixed4(i.uv.y,1,1,1);
                 //return lerp(col, meta,.5);
-				return lerp(col, extra, extra.a);
+				return lerp(col, extra, extra.a)+meta*0.25;
             }
             ENDCG
         }

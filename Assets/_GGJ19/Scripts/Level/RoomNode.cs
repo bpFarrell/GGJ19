@@ -164,14 +164,24 @@ public class RoomNode : MonoBehaviour {
         if(left!=null)nearest.Remove(left);
     }
     public void AddHazard() {
+        bool isObjectiveRoom = false;
+        if (type != ResourceColor.NONE) {
+            if (hasNeededRepairs) return;
+            isObjectiveRoom = true;
+        }
         GameObject go = (GameObject)Instantiate ( Resources.Load("Breach (Audio)"),hazardContainer);
         RepairButton rb = go.GetComponent<RepairButton>();
         rb.RemoveFromRoom = RemoveHazard;
         float nudge = 1.5f;
-        go.transform.position = new Vector3(
-            UnityEngine.Random.Range(bounds.min.x + nudge, bounds.max.x - nudge),
-            0,
-            UnityEngine.Random.Range(bounds.min.z + nudge, bounds.max.z - nudge));
+        if (isObjectiveRoom) {
+            go.transform.position = gameObject.transform.position;
+            //go.transform.localPosition = Vector3.one; 
+        } else {
+            go.transform.position = new Vector3(
+                UnityEngine.Random.Range(bounds.min.x + nudge, bounds.max.x - nudge),
+                0,
+                UnityEngine.Random.Range(bounds.min.z + nudge, bounds.max.z - nudge));
+        }
         go.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
         currentRepairs.Add(rb);
         UpdateLights();
