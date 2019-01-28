@@ -15,9 +15,12 @@ public class PlayerController : MonoBehaviour
     public RoomNode previousRoom;
     public RoomNode nextRoom;
 
+    Animator animator;
+
 
     void Awake()
     {
+        animator = transform.Find("PlayerMesh").GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         yPos = transform.position.y;
     }
@@ -110,8 +113,13 @@ public class PlayerController : MonoBehaviour
             currentButton.Interact();
         }
 
+        Vector3 last_pos = transform.position;
         Vector3 dir = GetDir();
-        if (dir.magnitude == 0) return;
+        if (dir.magnitude == 0)
+        {
+            animator.SetFloat("Blend", 0);
+            return;
+        }
         Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
         float faceScale = Vector3.Dot(transform.forward, dir.normalized);
@@ -124,7 +132,9 @@ public class PlayerController : MonoBehaviour
         } else {
             transform.position += targetDir;
         }
-        
+
+        float v = (transform.position - last_pos).magnitude / Time.deltaTime;
+        animator.SetFloat("Blend", v / 5);
         
     }
     Vector3 GetDir() {
