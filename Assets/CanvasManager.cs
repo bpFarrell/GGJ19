@@ -48,6 +48,9 @@ public class CanvasManager : SingletonBehaviour<CanvasManager>
             case State.NULL:
                 break;
             case State.IDLE:
+                if (Input.anyKeyDown) {
+                    GameManager.Instance.state = GameState.PLAY;
+                }
                 BlinkSubmit();
                 break;
             case State.TRANSITION:

@@ -59,7 +59,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     private GameState s_state = GameState.NULL;
     public GameState state {
         get { return s_state; }
-        private set {
+        set {
             if (value == s_state) return;
             GameState prev = s_state;
             s_state = value;
