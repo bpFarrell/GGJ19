@@ -14,12 +14,12 @@ public class GameManager : SingletonBehaviour<GameManager>
     }
     private void Awake() {
         OnPlayEnter += (x,y)=> {
+            Initialize();
             levelManager.Initialize();
             resourceManager.Initialize();
         };
         OnPlayExit += (x)=> {
-            levelManager.Cleanup();
-            resourceManager.Cleanup();
+            Cleanup();
         };
     }
     private void Start()
