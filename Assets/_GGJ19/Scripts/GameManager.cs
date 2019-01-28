@@ -9,15 +9,28 @@ public class GameManager : SingletonBehaviour<GameManager>
     public ResourceManager resourceManager {
         get { return ResourceManager.Instance; }
     }
-    private void Start() {
-        Initialize();
+    public CanvasManager canvasManager {
+        get { return CanvasManager.Instance; }
     }
+    private void Awake() {
+        OnPlayEnter += (x,y)=> {
+            levelManager.Initialize();
+            resourceManager.Initialize();
+        };
+        OnPlayExit += (x)=> {
+            levelManager.Cleanup();
+            resourceManager.Cleanup();
+        };
+    }
+    private void Start()
+    {
+        state = GameState.MENU;
+    }
+
     ///////////////////////////////////////////////////////
     public void Initialize() {
         if (levelManager == null && levelPrefab != null) Instantiate(levelPrefab);
-        levelManager.Initialize();
         if (resourceManager == null) new GameObject("Resource Manager").AddComponent<ResourceManager>();
-        resourceManager.Initialize();
         CreateAmbiance();
     }
     public void Cleanup() {
@@ -29,4 +42,69 @@ public class GameManager : SingletonBehaviour<GameManager>
     private void CreateAmbiance() {
         Instantiate(Resources.Load<GameObject>("AudioAmbiance"));
     }
+
+    ///////////////////////////////////////////////////////
+    /// Main State Machine
+    /// 
+
+    public delegate void StateEnterDelegate(GameState state, GameState previous);
+    public StateEnterDelegate OnMenuEnter;
+    public StateEnterDelegate OnPlayEnter;
+    public StateEnterDelegate OnEndEnter;
+    public delegate void StateExitDelegate(GameState state);
+    public StateExitDelegate OnMenuExit;
+    public StateExitDelegate OnPlayExit;
+    public StateExitDelegate OnEndExit;
+
+    private GameState s_state = GameState.NULL;
+    public GameState state {
+        get { return s_state; }
+        private set {
+            if (value == s_state) return;
+            GameState prev = s_state;
+            s_state = value;
+            EnterState(s_state, prev);
+        }
+    }
+    private void EnterState(GameState state, GameState prev) {
+        switch (state) {
+            case GameState.NULL:
+                break;
+            case GameState.MENU:
+                if(OnMenuEnter!=null) OnMenuEnter(state, prev);
+                break;
+            case GameState.PLAY:
+                if (OnPlayEnter != null) OnPlayEnter(state, prev);
+                break;
+            case GameState.END:
+                if (OnEndEnter != null) OnEndEnter(state, prev);
+                break;
+            default:
+                break;
+        }
+        ExitState(prev);
+    }
+    private void ExitState(GameState state) {
+        switch (state) {
+            case GameState.NULL:
+                break;
+            case GameState.MENU:
+                if (OnMenuExit != null) OnMenuExit(state);
+                break;
+            case GameState.PLAY:
+                if (OnPlayExit != null) OnPlayExit(state);
+                break;
+            case GameState.END:
+                if (OnEndExit != null) OnEndExit(state);
+                break;
+            default:
+                break;
+        }
+    }
+}
+public enum GameState {
+    NULL,
+    MENU,
+    PLAY,
+    END
 }
