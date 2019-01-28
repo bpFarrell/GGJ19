@@ -50,6 +50,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
     void Awake()
     {
         GameManager.Instance.OnPlayEnter += ReallyStart;
+        hull.SetActive(false);
     }
 
     void ReallyStart(GameState state, GameState previous)
