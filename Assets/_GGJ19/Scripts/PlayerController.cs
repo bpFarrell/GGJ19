@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : SingletonBehaviour<PlayerController>
 {
-    public static PlayerController instance;
     public float moveSpeed = 1;
     float moddedSpeed {
         get {
@@ -34,9 +33,7 @@ public class PlayerController : MonoBehaviour
     Animator animator;
 
 
-    void Awake()
-    {
-        instance = this;
+    void Awake() {
         animator = transform.Find("PlayerMesh").GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         yPos = transform.position.y;
