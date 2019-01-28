@@ -64,7 +64,7 @@
 				//col = tex2D(_MainTex, i.uv);
 				float l = Lumen(col);
 				col = lerp(col,fixed4(l,l,l,l),t);
-                return col*(1-t*0.4)*(1-v*0.4);
+                return col*(1-t*0.4)*(1-v*0.2);
             }
             ENDCG
         }
