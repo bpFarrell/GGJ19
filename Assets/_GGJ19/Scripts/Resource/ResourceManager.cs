@@ -93,7 +93,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         if (generationState == ResourceColor.GREEN) {
             greenResource += Values.Resources.GREENBASERECHARGERATE * Time.deltaTime;
         } else {
-            RoomNode room = PlayerController.instance.currentRoom;
+            RoomNode room = PlayerController.Instance.currentRoom;
             float leak = 0;
             if (room != null&&room.hasNeededRepairs) {
                 leak = 0.02f;
