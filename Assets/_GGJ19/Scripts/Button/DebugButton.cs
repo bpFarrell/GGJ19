@@ -37,7 +37,7 @@ public class DebugButton : BaseButton
         Toggle();
         if(rc== ResourceColor.PORTAL) {
             if (ResourceManager.Instance.yellowResource == 1 && DockedShip.instance != null) {
-                CutSceneManager.Instance.ChangeState(CutSceneManager.GameState.ShipLeaving);
+                CutSceneManager.Instance.ChangeState(CutSceneManager.CutSceneState.ShipLeaving);
             }
         }
     }
