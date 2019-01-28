@@ -50,6 +50,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
     void Awake()
     {
         GameManager.Instance.OnPlayEnter += ReallyStart;
+        hull.SetActive(false);
     }
 
     void ReallyStart(GameState state, GameState previous)
@@ -178,7 +179,8 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
                 flyOffTime += Time.deltaTime;
                 if (flyOffTime > flyOffDuration)
                 {
-                    ChangeState(CutSceneState.ShipDocking);
+                    GameManager.Instance.state = GameState.END;
+                    //ChangeState(CutSceneState.ShipDocking);
                 }
             }
         }

@@ -48,15 +48,15 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     }
     // Power
+    public float timeTillTeleport = 90;
     private float s_yellowResource;
     public float yellowResource{
     	get{
-            return DockedShip.instance == null ? 1 : s_yellowResource/DockedShip.instance.teleportTime;
-
+            return s_yellowResource;
         }
     	set{
     		s_yellowResource = value;
-            s_yellowResource = Mathf.Clamp(0, DockedShip.instance == null ? 0 : DockedShip.instance.teleportTime, s_yellowResource);
+            s_yellowResource = Mathf.Clamp(s_yellowResource, 0, timeTillTeleport);
     	}
     }
     public void Initialize() {
@@ -110,6 +110,11 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         }
         if ( generationState == ResourceColor.PORTAL) {
             yellowResource += Values.Resources.YELLOWBASERECHARGERATE * Time.deltaTime;
+            if (ResourceManager.Instance.yellowResource == ResourceManager.Instance.timeTillTeleport
+                && DockedShip.instance != null) {
+                CutSceneManager.Instance.ChangeState(CutSceneManager.CutSceneState.ShipLeaving);
+                yellowResource = 0;
+            }
         }
     }
     public void Cleanup() {
