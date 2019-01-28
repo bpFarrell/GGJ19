@@ -589,7 +589,7 @@ MonoBehaviour:
   glow: {fileID: 2100000, guid: 9c9bd5e4077277646b1df45dcf8c2606, type: 2}
   noGlow: {fileID: 2100000, guid: fcac308ba38dd79498b3668fe61ab713, type: 2}
   outputRenderer: {fileID: 0}
-  colorOn: {r: 0.38120452, g: 0.6320754, b: 0.3488341, a: 1}
+  colorOn: {r: 0.47941136, g: 0.754717, b: 0.44499823, a: 1}
   colorOff: {r: 0.3764706, g: 0.54509807, b: 0.40383056, a: 1}
   rc: 2
   isInRange: 0

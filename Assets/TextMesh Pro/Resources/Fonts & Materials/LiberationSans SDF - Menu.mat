@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LiberationSans SDF - Drop Shadow
+  m_Name: LiberationSans SDF - Menu
   m_Shader: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
   m_ShaderKeywords: OUTLINE_ON UNDERLAY_ON
   m_LightmapFlags: 5
@@ -70,7 +70,7 @@ Material:
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9
     - _ScaleRatioB: 0.73125
-    - _ScaleRatioC: 0.31950673
+    - _ScaleRatioC: 0.29577953
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -84,7 +84,7 @@ Material:
     - _TextureWidth: 1024
     - _UnderlayDilate: 1
     - _UnderlayOffsetX: 0.5
-    - _UnderlayOffsetY: 0.379
+    - _UnderlayOffsetY: 0.661
     - _UnderlaySoftness: 0.507
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
@@ -101,4 +101,4 @@ Material:
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0.7764706, g: 0.75575167, b: 0.32549018, a: 0.5}
+    - _UnderlayColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 0.5}

@@ -7,20 +7,14 @@ using UnityEditor;
 #endif
 
 public class RoomNode : MonoBehaviour {
-    public enum RoomType {
-        RED,
-        BLUE,
-        GREEN,
-        PORTAL,
-        NOTHING
-    }
     // Inspector Controls
-    public RoomType type = RoomType.NOTHING;
+    public ResourceColor type = ResourceColor.NONE;
     public GameObject wallPrefab;
     public GameObject doorPrefab;
     public Transform geometryContainer;
     public Transform hazardContainer;
     public Transform interactionContainer;
+    Material pumpMaterial;
     // Material Controls
     private Color targetLights = Values.Colors.NORMAL_LIGHTS;
     private Color targetRoom = Values.Colors.NORMAL_ROOM;
@@ -95,6 +89,9 @@ public class RoomNode : MonoBehaviour {
         if (mr == null) return;
         mat = new Material(mr.material);
         if(Application.isPlaying) mr.material = mat;
+        if (type != ResourceColor.NONE && type != ResourceColor.PORTAL) {
+            pumpMaterial = PumpLocator.GetMat(type);
+        }
     }
     private void UpdateLights() {
         if (hasNeededRepairs) {
@@ -188,6 +185,8 @@ public class RoomNode : MonoBehaviour {
         mat.SetColor("_LightColor", Color.Lerp(temp, targetLights, roomColorSpeed * Time.deltaTime));
         temp = mat.GetColor("_FullRoom");
         mat.SetColor("_FullRoom", Color.Lerp(temp, targetRoom, roomColorSpeed * Time.deltaTime));
+        if(pumpMaterial!=null)
+            pumpMaterial.SetColor("_FullRoom", Color.Lerp(temp, targetRoom, roomColorSpeed * Time.deltaTime));
     }
     //////////////////////////////////////////////////////////////
     ///Gizmos

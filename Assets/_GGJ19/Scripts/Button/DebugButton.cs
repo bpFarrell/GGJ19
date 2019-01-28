@@ -43,9 +43,11 @@ public class DebugButton : BaseButton
     }
     private void Toggle() {
         if (isRunning) {
-            ResourceManager.Instance.generationState &= ~rc; 
+            ResourceManager.Instance.generationState &= ~rc;
+            PumpLocator.SetOff(rc);
         } else {
             ResourceManager.Instance.generationState = ResourceManager.Instance.generationState |rc;
+            PumpLocator.SetOn(rc);
         }
     }
     public override void OnEnter() {

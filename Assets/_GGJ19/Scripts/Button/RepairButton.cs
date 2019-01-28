@@ -5,6 +5,9 @@ using UnityEngine;
 public class RepairButton : BaseButton
 {
     public System.Action<RepairButton> RemoveFromRoom;
+    Vector3 actaullyScale;
+    bool isShrinking;
+    float growSpeed = 3f;
     public void CleanUp() {
         Destroy(gameObject);
     }
@@ -16,7 +19,7 @@ public class RepairButton : BaseButton
         }
         if (RemoveFromRoom != null)
             RemoveFromRoom(this);
-        CleanUp();
+        isShrinking = true;
     }
 
     public override void OnEnter() {
@@ -26,7 +29,10 @@ public class RepairButton : BaseButton
     public override void OnLeave() {
 
     }
-
+    private void Awake() {
+        actaullyScale = transform.localScale;
+        transform.localScale = Vector3.zero;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +42,13 @@ public class RepairButton : BaseButton
     // Update is called once per frame
     void Update()
     {
-        
+        if (!isShrinking) {
+            transform.localScale = Vector3.Lerp(transform.localScale, actaullyScale, Time.deltaTime * growSpeed);
+        } else {
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * growSpeed);
+            if (transform.localScale.x < 0.01) {
+                CleanUp();
+            }
+        }
     }
 }

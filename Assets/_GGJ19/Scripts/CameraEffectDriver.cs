@@ -29,7 +29,6 @@ public class CameraEffectDriver : MonoBehaviour
         }
         else
         {
-            Debug.Log("Breathing easy!");
             master.SetFloat("MasterEQ", 1.0f);
         }
     }
