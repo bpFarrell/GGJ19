@@ -55,8 +55,9 @@ public class LevelManager : SingletonBehaviour<LevelManager>
         //}
     }
     public void CreateHazard() {
+        if (rooms == null) return;
         int index = Random.Range(0, rooms.Count);
-        rooms[index].AddHazard(); 
+        rooms[index].AddHazard();
         //choose room to create hazard in
     }
     public void Cleanup() {
@@ -68,8 +69,8 @@ public class LevelManager : SingletonBehaviour<LevelManager>
     private void Update() {
         if (Time.time > nextBreachAt) {
             nextBreachAt = Time.time + Random.Range(5, 15);
-            if(true)//GameState == inGame
-            CreateHazard();
+            if(GameManager.Instance.state == GameState.PLAY)
+                CreateHazard();
         }
     }
 }

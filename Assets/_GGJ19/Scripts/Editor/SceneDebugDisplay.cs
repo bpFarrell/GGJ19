@@ -6,6 +6,7 @@ public class SceneDebugDisplay : EditorWindow
     [MenuItem("Window/Scene GUI/Enable")]
     public static void Enable()
     {
+        SceneView.onSceneGUIDelegate -= OnScene;
         SceneView.onSceneGUIDelegate += OnScene;
         Debug.Log("Scene GUI : Enabled");
     }

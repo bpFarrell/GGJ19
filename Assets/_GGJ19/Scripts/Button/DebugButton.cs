@@ -36,18 +36,22 @@ public class DebugButton : BaseButton
         buttonInteract.PlayOneShot(buttonPress, 1.0f);
         Toggle();
         if(rc== ResourceColor.PORTAL) {
-            if (ResourceManager.Instance.yellowResource == 1 && DockedShip.instance != null) {
-                CutSceneManager.Instance.ChangeState(CutSceneManager.CutSceneState.ShipLeaving);
+            if (ResourceManager.Instance.yellowResource == ResourceManager.Instance.timeTillTeleport 
+                && DockedShip.instance != null) {
+                CutSceneManager.Instance.ChangeState(CutSceneManager.GameState.ShipLeaving);
             }
         }
     }
     private void Toggle() {
         if (isRunning) {
             ResourceManager.Instance.generationState &= ~rc;
-            PumpLocator.SetOff(rc);
+            if(rc!= ResourceColor.PORTAL)
+                PumpLocator.SetOff(rc);
         } else {
             ResourceManager.Instance.generationState = ResourceManager.Instance.generationState |rc;
-            PumpLocator.SetOn(rc);
+
+            if (rc != ResourceColor.PORTAL)
+                PumpLocator.SetOn(rc);
         }
     }
     public override void OnEnter() {
@@ -76,7 +80,7 @@ public class DebugButton : BaseButton
                 t = ResourceManager.Instance.blueResource;
                 break;
             case ResourceColor.PORTAL:
-                t = ResourceManager.Instance.yellowResource;
+                t = ResourceManager.Instance.yellowResource / ResourceManager.Instance.timeTillTeleport;
                 break;
             default:
                 break;
