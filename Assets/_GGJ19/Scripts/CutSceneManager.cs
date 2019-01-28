@@ -179,7 +179,8 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
                 flyOffTime += Time.deltaTime;
                 if (flyOffTime > flyOffDuration)
                 {
-                    ChangeState(CutSceneState.ShipDocking);
+                    GameManager.Instance.state = GameState.END;
+                    //ChangeState(CutSceneState.ShipDocking);
                 }
             }
         }

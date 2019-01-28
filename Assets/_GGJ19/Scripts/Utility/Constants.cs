@@ -19,7 +19,7 @@
         public const float REDBASERECHARGERATE      = 0.1f;
         public const float BLUEBASERECARGERATE      = 0.1f;
         public const float GREENBASERECHARGERATE    = 0.1f;
-        public const float YELLOWBASERECHARGERATE   = 0;
+        public const float YELLOWBASERECHARGERATE   = 1.0f;
 
         public static float REDMODRATE{
             get {

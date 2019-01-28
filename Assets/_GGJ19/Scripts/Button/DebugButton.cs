@@ -35,12 +35,6 @@ public class DebugButton : BaseButton
         buttonInteract = GetComponent<AudioSource>();
         buttonInteract.PlayOneShot(buttonPress, 1.0f);
         Toggle();
-        if(rc== ResourceColor.PORTAL) {
-            if (ResourceManager.Instance.yellowResource == ResourceManager.Instance.timeTillTeleport 
-                && DockedShip.instance != null) {
-                CutSceneManager.Instance.ChangeState(CutSceneManager.GameState.ShipLeaving);
-            }
-        }
     }
     private void Toggle() {
         if (isRunning) {
