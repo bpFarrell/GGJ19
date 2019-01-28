@@ -12,7 +12,7 @@
         public const float YELLOWBASE       = 0;
 
         public const float REDBASEDECAYRATE         = 0f;
-        public const float BLUEBASEDECAYRATE        = 0.03f;
+        public const float BLUEBASEDECAYRATE        = 0.015f;
         public const float GREENBASEDECAYRATE       = 0.01f;
         public const float YELLOWBASEDECAYRATE      = 0f;
 

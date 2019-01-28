@@ -17,7 +17,12 @@ public class ActualCameraFollow : MonoBehaviour
 
     Vector3 target_pos;
 
-    void Start()
+    void Awake()
+    {
+        GameManager.Instance.OnPlayEnter += ReallyStart;
+    }
+
+    void ReallyStart(GameState state, GameState previous)
     {
         defaultRotation = transform.rotation;
 

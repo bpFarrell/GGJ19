@@ -13,9 +13,9 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
     public Material hullMat;
     
 
-    public enum GameState { Menu, NormalPlay, ShipDocking, ShipLeaving, EndBadly, End }
-    public GameState gameState = GameState.Menu;
-    public GameState currentState { get { return gameState; } }
+    public enum CutSceneState { Menu, NormalPlay, ShipDocking, ShipLeaving, EndBadly, End }
+    public CutSceneState gameState = CutSceneState.Menu;
+    public CutSceneState currentState { get { return gameState; } }
 
     //pan out controls
     enum Panning { None, In, Out }
@@ -47,10 +47,15 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
     float scaffoldOffTime;
     public float scaffoldOffDuration = 1;
 
-
-    void Start()
+    void Awake()
     {
-        gameState = GameState.NormalPlay;
+        GameManager.Instance.OnPlayEnter += ReallyStart;
+        hull.SetActive(false);
+    }
+
+    void ReallyStart(GameState state, GameState previous)
+    {
+        gameState = CutSceneState.NormalPlay;
 
         //set up pan stuff
         panAnimator = panOutTarget.gameObject.GetComponent<Animator>();
@@ -73,15 +78,15 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
              //toggle docking
-            if (gameState != GameState.ShipDocking) ChangeState(GameState.ShipDocking);
-            else if (gameState == GameState.ShipDocking) ChangeState(GameState.NormalPlay);
+            if (gameState != CutSceneState.ShipDocking) ChangeState(CutSceneState.ShipDocking);
+            else if (gameState == CutSceneState.ShipDocking) ChangeState(CutSceneState.NormalPlay);
             //ChangeState((GameState)((int)gameState + 1) % System.Enum.GetValues(typeof(myenum)).Length);
         }
         else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
             //toggle ship goes on way
-            if (gameState != GameState.ShipLeaving) ChangeState(GameState.ShipLeaving);
-            else if (gameState == GameState.ShipLeaving) ChangeState(GameState.NormalPlay);
+            if (gameState != CutSceneState.ShipLeaving) ChangeState(CutSceneState.ShipLeaving);
+            else if (gameState == CutSceneState.ShipLeaving) ChangeState(CutSceneState.NormalPlay);
             //ChangeState((GameState)((int)gameState + 1) % System.Enum.GetValues(typeof(myenum)).Length);
         }
 
@@ -121,7 +126,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
 
 
 
-        if (gameState == GameState.ShipDocking)
+        if (gameState == CutSceneState.ShipDocking)
         {
             //if (dockingPhase == DockingPhase.PanOut)
             //{
@@ -141,13 +146,13 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
                 dockingPanTime += Time.deltaTime;
                 if (dockingPanTime >= dockingPanDuration)
                 {
-                    ChangeState(GameState.NormalPlay);
+                    ChangeState(CutSceneState.NormalPlay);
                     //EndOfDock();
                 }
             }
         }
 
-        if (gameState == GameState.ShipLeaving)
+        if (gameState == CutSceneState.ShipLeaving)
         {
             if (panOutTime > panOutDuration * .75f)
             {
@@ -174,7 +179,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
                 flyOffTime += Time.deltaTime;
                 if (flyOffTime > flyOffDuration)
                 {
-                    ChangeState(GameState.ShipDocking);
+                    ChangeState(CutSceneState.ShipDocking);
                 }
             }
         }
@@ -195,13 +200,13 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
         return panOutTarget.transform.position;
     }
 
-    public void ChangeState(GameState newState)
+    public void ChangeState(CutSceneState newState)
     {
         Debug.Log("Change scene state to " + newState);
         if (newState == gameState) return;
         gameState = newState;
 
-        if (newState == GameState.ShipDocking)
+        if (newState == CutSceneState.ShipDocking)
         {
             panningDir = Panning.Out;
             //panOutTime = 0;
@@ -214,11 +219,11 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
             otherShipAnimator.Play("Dock", -1, 0);
             otherShipAnimator.speed = 0;
         }
-        else if (newState == GameState.NormalPlay)
+        else if (newState == CutSceneState.NormalPlay)
         {
             panningDir = Panning.In;
         }
-        else if (newState == GameState.ShipLeaving)
+        else if (newState == CutSceneState.ShipLeaving)
         {
             panningDir = Panning.Out;
             otherShipAnimator.Play("FlyToPortal", -1, 0);

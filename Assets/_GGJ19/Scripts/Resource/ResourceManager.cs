@@ -93,7 +93,16 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         if (generationState == ResourceColor.GREEN) {
             greenResource += Values.Resources.GREENBASERECHARGERATE * Time.deltaTime;
         } else {
-            greenResource -= Values.Resources.GREENBASEDECAYRATE * Time.deltaTime;
+            RoomNode room = PlayerController.Instance.currentRoom;
+            float leak = 0;
+            if (room != null&&room.hasNeededRepairs) {
+                leak = 0.02f;
+            }
+            greenResource -= (Values.Resources.GREENBASEDECAYRATE+leak) * Time.deltaTime;
+
+            if (greenResource == 0) {
+                GameManager.Instance.state = GameState.END;
+            }
         }
         if ( generationState == ResourceColor.PORTAL) {
             yellowResource += Values.Resources.YELLOWBASERECHARGERATE * Time.deltaTime;

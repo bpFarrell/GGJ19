@@ -2,9 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : SingletonBehaviour<PlayerController>
 {
     public float moveSpeed = 1;
+    float moddedSpeed {
+        get {
+            float mult;
+            float blue = ResourceManager.Instance.blueResource;
+            if (blue > .9)
+                mult = 1.1f;
+            if (blue > .6)
+                mult = 1.0f;
+            if (blue > .3)
+                mult = 0.9f;
+            else
+                mult = 0.75f;
+            return moveSpeed  * mult;
+        }
+    }
     public float turnSpeed = 1;
     private float yPos;
     BaseButton currentButton;
@@ -18,8 +33,7 @@ public class PlayerController : MonoBehaviour
     Animator animator;
 
 
-    void Awake()
-    {
+    void Awake() {
         animator = transform.Find("PlayerMesh").GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         yPos = transform.position.y;
@@ -111,6 +125,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && currentButton != null) {
             currentButton.Interact();
+            animator.SetTrigger("Interact");
         }
 
         Vector3 last_pos = transform.position;
@@ -123,7 +138,7 @@ public class PlayerController : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
         float faceScale = Vector3.Dot(transform.forward, dir.normalized);
-        Vector3 targetDir = transform.forward * moveSpeed * Time.deltaTime * faceScale;
+        Vector3 targetDir = transform.forward * moddedSpeed * Time.deltaTime * faceScale;
         RaycastHit hit;
         if(Physics.Raycast(transform.position,targetDir,out hit)
             && (hit.distance < targetDir.magnitude)||(hit.distance< moveBias)
