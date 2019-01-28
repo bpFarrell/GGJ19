@@ -15,7 +15,7 @@ public class MeshRendererEditor : Editor
         {
             if (GUILayout.Button("New Material"))
             {
-                Material mat = new Material(Shader.Find("Standard"));
+                Material mat = script.material;
                 AssetDatabase.CreateAsset(mat, "Assets/New Material.mat");
                 script.material = mat;
             }
