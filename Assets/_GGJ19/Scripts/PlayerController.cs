@@ -61,8 +61,10 @@ public class PlayerController : SingletonBehaviour<PlayerController>
         return Direction.Right; //pretend error states are go right
     }
 
+    private bool FuckYouIHateThis = false;
     bool UpdateCurrentRoom2()
     {
+        if (LevelManager.Instance == null || LevelManager.Instance.rooms == null) return FuckYouIHateThis;
         //get room with closest center
         float dist = 10000000;
         RoomNode closest = null;

@@ -35,6 +35,7 @@ public class ActualCameraFollow : MonoBehaviour
 
     Vector3 GetRoomCenter()
     {
+
         if (player.currentRoom != null) return player.currentRoom.bounds.center;
         return targetObject.position;
 

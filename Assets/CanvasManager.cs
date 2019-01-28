@@ -93,6 +93,8 @@ public class CanvasManager : SingletonBehaviour<CanvasManager>
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, CAMERAORIGIN, 0.025f);
         if((CAMERAORIGIN - Camera.main.transform.position).magnitude <= 0.5f) { // At destination
             GameManager.Instance.state = GameState.PLAY;
+            CameraEffectDriver thing = Camera.main.GetComponent<CameraEffectDriver>();
+            if (thing != null) thing.enabled = true;
             state = State.END;
         }
     }

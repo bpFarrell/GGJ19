@@ -36,7 +36,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void Initialize() {
         if (levelManager == null && levelPrefab != null) Instantiate(levelPrefab);
         if (resourceManager == null) new GameObject("Resource Manager").AddComponent<ResourceManager>();
-        if (playerPrefab != null) Instantiate(playerPrefab);
+        if (playerPrefab != null && PlayerController.Instance == null) Instantiate(playerPrefab);
         if (cutSceneManager == null && cutScenePrefab != null) {
             Instantiate(cutScenePrefab);
         }
