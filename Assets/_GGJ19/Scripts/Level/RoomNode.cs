@@ -192,6 +192,7 @@ public class RoomNode : MonoBehaviour {
         UpdateLights();
     }
     private void Update() {
+        if (mat == null) return;
         Color temp = mat.GetColor("_LightColor");
         mat.SetColor("_LightColor", Color.Lerp(temp, targetLights, roomColorSpeed * Time.deltaTime));
         temp = mat.GetColor("_FullRoom");
