@@ -540,6 +540,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7876868094457905021}
     m_Modifications:
+    - target: {fileID: 100000, guid: ad4ccfa8c00520a4a8b5aff38f0c24c9, type: 3}
+      propertyPath: m_Name
+      value: Pump_BLUE_01
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ad4ccfa8c00520a4a8b5aff38f0c24c9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -583,10 +587,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: ad4ccfa8c00520a4a8b5aff38f0c24c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: ad4ccfa8c00520a4a8b5aff38f0c24c9, type: 3}
-      propertyPath: m_Name
-      value: Pump_BLUE_01
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: ad4ccfa8c00520a4a8b5aff38f0c24c9, type: 3}
       propertyPath: m_Materials.Array.data[0]
