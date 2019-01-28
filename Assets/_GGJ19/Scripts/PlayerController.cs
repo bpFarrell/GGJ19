@@ -125,6 +125,7 @@ public class PlayerController : SingletonBehaviour<PlayerController>
 
         if (Input.GetButtonDown("Jump") && currentButton != null) {
             currentButton.Interact();
+            animator.SetTrigger("Interact");
         }
 
         Vector3 last_pos = transform.position;
