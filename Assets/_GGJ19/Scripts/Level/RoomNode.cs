@@ -165,6 +165,7 @@ public class RoomNode : MonoBehaviour {
     }
     public void AddHazard() {
         bool isObjectiveRoom = false;
+        if (type == ResourceColor.PORTAL) return;
         if (type != ResourceColor.NONE) {
             if (hasNeededRepairs) return;
             isObjectiveRoom = true;
