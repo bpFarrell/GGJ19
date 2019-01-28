@@ -24,7 +24,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     }
     private void Start()
     {
-        state = GameState.MENU;
+        state = GameState.PLAY;
     }
 
     ///////////////////////////////////////////////////////
@@ -77,6 +77,7 @@ public class GameManager : SingletonBehaviour<GameManager>
                 if (OnPlayEnter != null) OnPlayEnter(state, prev);
                 break;
             case GameState.END:
+                Application.Quit();
                 if (OnEndEnter != null) OnEndEnter(state, prev);
                 break;
             default:
