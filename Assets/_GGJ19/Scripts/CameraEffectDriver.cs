@@ -22,28 +22,30 @@ public class CameraEffectDriver : MonoBehaviour
     private void Update() {
         if (ResourceManager.Instance == null)return;
         mat.SetFloat("_T", ResourceManager.Instance.greenResource * 2);
+
         if (ResourceManager.Instance.greenResource <= 0.4f) {
-            effectonEQ = 1.0f - Mathf.InverseLerp(0.0f, 0.8f, ResourceManager.Instance.greenResource);
-            oxygenIndicator.pitch = 1.0f + Mathf.InverseLerp(0.0f, 0.5f, ResourceManager.Instance.greenResource / 2);
+            effectonEQ = Mathf.Lerp(-0.4f, 1.0f, ResourceManager.Instance.greenResource + 0.6f);
+            oxygenIndicator.pitch = 1.0f + Mathf.Lerp(1.7f, 0.0f, ResourceManager.Instance.greenResource + 0.6f);
             PlayHeartBeat();
         }
         else
         {
+            //Debug.Log("Breathing easy!");
             master.SetFloat("MasterEQ", 1.0f);
+            oxygenIndicator.Stop();
         }
     }
     public void PlayHeartBeat()
     {
-        {
-            //Debug.Log("You're low on Oxygen!");
-            oxygenLow = true;
-            while (oxygenLow == true & oxygenIndicator.isPlaying == false)
+        //Debug.Log("You're low on Oxygen!");
+        master.SetFloat("MasterEQ", effectonEQ);
+        oxygenLow = true;
+        while (oxygenLow == true & oxygenIndicator.isPlaying == false)
             {
-                //Debug.Log(effectonEQ);
-                oxygenIndicator.Play();
-                master.SetFloat("MasterEQ",effectonEQ);
+            //Debug.Log(effectonEQ);
+            oxygenIndicator.Play();
             }
-        }
+
     }
 }
 
