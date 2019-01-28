@@ -8,6 +8,10 @@ public class PumpLocator : MonoBehaviour
     public static Dictionary<ResourceColor,PumpLocator> locators = new Dictionary<ResourceColor, PumpLocator>();
     private static List<PumpLocator> locatorList = new List<PumpLocator>();
     public Material mat;
+    public AudioClip successfulOn;
+    public AudioClip successfulOff;
+    public AudioSource generatorToggle;
+
     // Start is called before the first frame update
     private void Awake() {
         locators.Add(type, this);
@@ -29,8 +33,10 @@ public class PumpLocator : MonoBehaviour
     }
     public void SetThisOn() {
         mat.SetVector("_EnergyPower", Vector4.one);
+        generatorToggle.PlayOneShot(successfulOn, 1.0f);
     }
     public void SetThisOff() {
         mat.SetVector("_EnergyPower", Vector4.zero);
+        generatorToggle.PlayOneShot(successfulOff, 1.0f);
     }
 }
