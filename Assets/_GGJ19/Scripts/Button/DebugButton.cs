@@ -59,6 +59,7 @@ public class DebugButton : BaseButton
         isInRange = false;
     }
     public void Update() {
+        if (ResourceManager.Instance == null) return;
         if (outputMat == null) return;
         float t = 1;
         switch (rc) {
