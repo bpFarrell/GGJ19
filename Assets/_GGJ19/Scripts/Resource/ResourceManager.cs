@@ -50,6 +50,8 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     // Power
     public float timeTillTeleport = 90;
     private float s_yellowResource;
+    private bool isInit = false;
+
     public float yellowResource{
     	get{
             return s_yellowResource;
@@ -60,11 +62,13 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
     	}
     }
     public void Initialize() {
+        if (isInit) return;
         generationState = ResourceColor.NONE;
         redResource     = Values.Resources.REDBASE;
         blueResource    = Values.Resources.BLUEBASE;
         greenResource   = Values.Resources.GREENBASE;
         yellowResource  = Values.Resources.YELLOWBASE;
+        isInit = true;
     }
     public bool isOverLoaded {
         get {
@@ -80,6 +84,7 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
         }
     }
     private void Update() {
+        if (!isInit) return;
         if (isOverLoaded) return;
         float speed = 0.05f;
         if (generationState == ResourceColor.RED) {
@@ -101,11 +106,11 @@ public class ResourceManager : SingletonBehaviour<ResourceManager>
                 {
                     leak = 0.02f;
                 }
-            greenResource -= (Values.Resources.GREENBASEDECAYRATE+leak) * Time.deltaTime;
-            }
+                greenResource -= (Values.Resources.GREENBASEDECAYRATE+leak) * Time.deltaTime;
 
-            if (greenResource == 0) {
-                GameManager.Instance.state = GameState.END;
+                if (greenResource == 0) {
+                    GameManager.Instance.state = GameState.END;
+                }
             }
         }
         if ( generationState == ResourceColor.PORTAL) {
