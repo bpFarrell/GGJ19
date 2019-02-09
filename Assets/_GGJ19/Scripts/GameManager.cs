@@ -6,6 +6,9 @@ public class GameManager : SingletonBehaviour<GameManager>
     public GameObject cutScenePrefab;
     public GameObject playerPrefab;
 
+    private GameObject playerReference;
+    private GameObject cutSceneReference;
+
     public CutSceneManager cutSceneManager {
         get { return CutSceneManager.Instance; }
     }
@@ -36,16 +39,32 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void Initialize() {
         if (levelManager == null && levelPrefab != null) Instantiate(levelPrefab);
         if (resourceManager == null) new GameObject("Resource Manager").AddComponent<ResourceManager>();
-        if (playerPrefab != null && PlayerController.Instance == null) Instantiate(playerPrefab);
-        if (cutSceneManager == null && cutScenePrefab != null) {
-            Instantiate(cutScenePrefab);
-        }
+        if (playerReference == null && playerPrefab != null && PlayerController.Instance == null) playerReference = Instantiate(playerPrefab);
+        if (cutSceneReference == null && cutSceneManager == null && cutScenePrefab != null) cutSceneReference = Instantiate(cutScenePrefab);
         CreateAmbiance();
     }
     public void Cleanup() {
         // When this breaks, instead of hoping cleanup works perfectly, just destroy and re-initialize
-        if (levelManager != null) levelManager.Cleanup();
-        if (resourceManager != null) resourceManager.Cleanup();
+        if (levelManager != null) {
+            levelManager.Cleanup();
+            Destroy(levelManager.gameObject);
+        }
+        if (resourceManager != null) {
+            resourceManager.Cleanup();
+            Destroy(resourceManager.gameObject);
+        }
+        if(playerReference != null) {
+            Destroy(playerReference);
+        }
+        if (cutSceneReference != null) {
+            Destroy(cutSceneReference);
+        }
+        if(canvasManager != null) {
+            canvasManager.Cleanup();
+        }
+
+        // Reset Game States
+        state = GameState.MENU;
     }
     ///////////////////////////////////////////////////////
     private void CreateAmbiance() {
