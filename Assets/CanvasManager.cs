@@ -22,6 +22,7 @@ public class CanvasManager : SingletonBehaviour<CanvasManager>
     }
     private Graphic[] renderers;
     private List<Color> startColors = new List<Color>();
+    private Matrix4x4 startOrientation = new Matrix4x4();
     private void Awake()
     {
         GameManager.Instance.OnMenuEnter += (x, y) => {
@@ -36,6 +37,12 @@ public class CanvasManager : SingletonBehaviour<CanvasManager>
         foreach (Graphic text in renderers) {
             startColors.Add(text.color);
         }
+        startOrientation = new Matrix4x4( 
+            Camera.main.transform.position, 
+            Camera.main.transform.rotation.eulerAngles, 
+            Camera.main.transform.localScale, 
+            Vector4.zero 
+            );
         state = State.IDLE;
         interimColor = submit != null ? submit.color : Color.white;
     }
@@ -44,6 +51,10 @@ public class CanvasManager : SingletonBehaviour<CanvasManager>
             renderers[i].color = startColors[i];
         }
         startColors.Clear();
+
+        Camera.main.transform.position = startOrientation.GetColumn(0);
+        Camera.main.transform.rotation = Quaternion.Euler(startOrientation.GetColumn(1));
+        Camera.main.transform.localScale = startOrientation.GetColumn(2);
     }
     private void Update()
     {
@@ -97,5 +108,8 @@ public class CanvasManager : SingletonBehaviour<CanvasManager>
             if (thing != null) thing.enabled = true;
             state = State.END;
         }
+    }
+    private void TravelToIdle() {
+
     }
 }

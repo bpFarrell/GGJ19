@@ -22,6 +22,11 @@ public class ActualCameraFollow : MonoBehaviour
         GameManager.Instance.OnPlayEnter += (x, y) => { enabled = true; };
         GameManager.Instance.OnPlayExit += (x) => { enabled = false; };
     }
+    private void OnDisable()
+    {
+        GameManager.Instance.OnPlayEnter -= (x, y) => { enabled = true; };
+        GameManager.Instance.OnPlayExit -= (x) => { enabled = false; };
+    }
     private void OnEnable()
     {
         defaultRotation = transform.rotation;
