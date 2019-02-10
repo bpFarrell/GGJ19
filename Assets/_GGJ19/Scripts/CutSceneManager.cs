@@ -71,6 +71,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
         otherShipAnimator = otherShip.GetComponent<Animator>();
         flyOffDuration = 2;
 
+        GameManager.Instance.OnPlayEnter -= ReallyStart;
     }
 
     void Update()
