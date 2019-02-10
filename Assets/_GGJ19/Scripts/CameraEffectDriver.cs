@@ -24,7 +24,7 @@ public class CameraEffectDriver : MonoBehaviour
             mat.SetFloat("_T", 2f);
             return;
         }
-        mat.SetFloat("_T", ResourceManager.Instance.greenResource * 2);
+        mat.SetFloat("_T", Mathf.Pow( ResourceManager.Instance.greenResource,0.5f) * 2);
 
         if (ResourceManager.Instance.greenResource <= 0.4f) {
             effectonEQ = Mathf.Lerp(-0.4f, 1.0f, ResourceManager.Instance.greenResource + 0.6f);

@@ -4,7 +4,8 @@
     {
         _MainTex ("Albedo (RGB)", 2D) = "black" {}
 		_MetaTex ("Meta Mask", 2D) = "black" {}
-		_Resource  ("Resources", Vector) = (0,0,0,0)
+		_Resource("Resources", Vector) = (0,0,0,0)
+		_ResourceCharge("Charge", Vector) = (0,0,0,0)
 		_RedCol  ("Resource 1 Color", Color)  = (1,0,0,0)
 		_GreenCol ("Resource 2 Color", Color) = (0,1,0,0)
 		_BlueCol ("Resource 3 Color", Color)  = (0,0,1,0)
@@ -41,6 +42,7 @@
 			fixed4 _GreenCol;
 			fixed4 _BlueCol;
 			float4 _Resource;
+			float4 _ResourceCharge;
             float4 _MainTex_ST;
 
             v2f vert (appdata v)
@@ -55,7 +57,7 @@
             {
 				// sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
-				fixed4 meta = tex2D(_MetaTex, i.uv);
+				fixed4 meta = tex2D(_MetaTex, i.uv)*0.9;
 
 				fixed4 extra = float4(
 					meta.r * smoothstep((1-_Resource.r)-0.05, (1-_Resource.r), (1-i.uv.y)),
@@ -66,14 +68,20 @@
 
 				extra.a = max(max(extra.r, extra.g), extra.b);
 
-				//col = lerp(col, (_RedCol * extra.r), .5);
-				//col = lerp(col, (_GreenCol * extra.g), .5);
-				//col = lerp(col, (_BlueCol * extra.b), .5);
-
-                // apply fog
-				//return fixed4(i.uv.y,1,1,1);
-                //return lerp(col, meta,.5);
-				return lerp(col, extra, extra.a)+meta*0.25;
+				fixed4 filled = lerp(col, extra, extra.a) + meta * 0.25;
+				
+				fixed3 block = fixed3(
+					i.uv.x<0.333,
+					i.uv.x<0.666 && i.uv.x>0.333,
+					i.uv.x>.666);
+				float PI = 3.141529;
+				float arrow = _Time.x * -100 + (i.uv.y-abs(sin(i.uv.x*PI*3))) * 10;
+				block *= _ResourceCharge * sin(arrow)*0.2+1;
+				fixed4 final = 
+					block.x * _RedCol +
+					block.y * _GreenCol +
+					block.z * _BlueCol;
+				return filled * final;
             }
             ENDCG
         }
