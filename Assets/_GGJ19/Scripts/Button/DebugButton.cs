@@ -42,10 +42,14 @@ public class DebugButton : BaseButton
         if (isRunning)
         {
             ResourceManager.Instance.generationState = ResourceColor.NONE;
+            PumpLocator.SetOff(rc);
         }
         else
         {
+            if(ResourceManager.Instance.generationState!= ResourceColor.NONE)
+                PumpLocator.SetOff(ResourceManager.Instance.generationState);
             ResourceManager.Instance.generationState = rc;
+            PumpLocator.SetOn(rc);
         }
 #else
         if (isRunning) {
