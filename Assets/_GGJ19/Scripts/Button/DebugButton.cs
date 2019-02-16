@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#define NO_CONFLICTS
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,6 +38,20 @@ public class DebugButton : BaseButton
         Toggle();
     }
     private void Toggle() {
+#if NO_CONFLICTS
+        if (isRunning)
+        {
+            ResourceManager.Instance.generationState = ResourceColor.NONE;
+            PumpLocator.SetOff(rc);
+        }
+        else
+        {
+            if(ResourceManager.Instance.generationState!= ResourceColor.NONE)
+                PumpLocator.SetOff(ResourceManager.Instance.generationState);
+            ResourceManager.Instance.generationState = rc;
+            PumpLocator.SetOn(rc);
+        }
+#else
         if (isRunning) {
             ResourceManager.Instance.generationState &= ~rc;
             if(rc!= ResourceColor.PORTAL)
@@ -47,7 +62,8 @@ public class DebugButton : BaseButton
             if (rc != ResourceColor.PORTAL)
                 PumpLocator.SetOn(rc);
         }
-    }
+#endif
+        }
     public override void OnEnter() {
         if(target!=null)
             target.material = glow;
@@ -59,6 +75,7 @@ public class DebugButton : BaseButton
         isInRange = false;
     }
     public void Update() {
+        if (ResourceManager.Instance == null) return;
         if (outputMat == null) return;
         float t = 1;
         switch (rc) {

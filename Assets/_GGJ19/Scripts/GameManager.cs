@@ -3,6 +3,15 @@
 public class GameManager : SingletonBehaviour<GameManager>
 {
     public GameObject levelPrefab;
+    public GameObject cutScenePrefab;
+    public GameObject playerPrefab;
+
+    private GameObject playerReference;
+    private GameObject cutSceneReference;
+
+    public CutSceneManager cutSceneManager {
+        get { return CutSceneManager.Instance; }
+    }
     public LevelManager levelManager {
         get { return LevelManager.Instance; }
     }
@@ -13,7 +22,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         get { return CanvasManager.Instance; }
     }
     private void Awake() {
-        OnPlayEnter += (x,y)=> {
+        OnTransitionEnter += (x,y)=> {
             Initialize();
             levelManager.Initialize();
             resourceManager.Initialize();
@@ -22,25 +31,49 @@ public class GameManager : SingletonBehaviour<GameManager>
             Cleanup();
         };
     }
-    private void Start()
-    {
-        state = GameState.PLAY;
+    private void Start() {
+        state = GameState.MENU;
     }
 
     ///////////////////////////////////////////////////////
     public void Initialize() {
         if (levelManager == null && levelPrefab != null) Instantiate(levelPrefab);
         if (resourceManager == null) new GameObject("Resource Manager").AddComponent<ResourceManager>();
+        if (playerReference == null && playerPrefab != null && PlayerController.Instance == null) playerReference = Instantiate(playerPrefab);
+        if (cutSceneReference == null && cutSceneManager == null && cutScenePrefab != null) cutSceneReference = Instantiate(cutScenePrefab);
         CreateAmbiance();
     }
     public void Cleanup() {
         // When this breaks, instead of hoping cleanup works perfectly, just destroy and re-initialize
-        if (levelManager != null) levelManager.Cleanup();
-        if (resourceManager != null) resourceManager.Cleanup();
+        if (levelManager != null) {
+            levelManager.Cleanup();
+            Destroy(levelManager.gameObject);
+        }
+        if (resourceManager != null) {
+            resourceManager.Cleanup();
+            Destroy(resourceManager.gameObject);
+        }
+        if(playerReference != null) {
+            Destroy(playerReference);
+        }
+        if (cutSceneReference != null) {
+            Destroy(cutSceneReference);
+        }
+        if(canvasManager != null) {
+            canvasManager.Cleanup();
+        }
+
+        // Reset Game States
+        state = GameState.MENU;
     }
     ///////////////////////////////////////////////////////
     private void CreateAmbiance() {
-        Instantiate(Resources.Load<GameObject>("AudioAmbiance"));
+        return;
+        GameObject go = GameObject.Find("AudioAmbiance(Clone)");
+        if (go == null)
+        {
+            Instantiate(Resources.Load<GameObject>("AudioAmbiance"));
+        }
     }
 
     ///////////////////////////////////////////////////////
@@ -49,10 +82,12 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     public delegate void StateEnterDelegate(GameState state, GameState previous);
     public StateEnterDelegate OnMenuEnter;
+    public StateEnterDelegate OnTransitionEnter;
     public StateEnterDelegate OnPlayEnter;
     public StateEnterDelegate OnEndEnter;
     public delegate void StateExitDelegate(GameState state);
     public StateExitDelegate OnMenuExit;
+    public StateExitDelegate OnTransitionExit;
     public StateExitDelegate OnPlayExit;
     public StateExitDelegate OnEndExit;
 
@@ -67,11 +102,12 @@ public class GameManager : SingletonBehaviour<GameManager>
         }
     }
     private void EnterState(GameState state, GameState prev) {
-        switch (state) {
+        switch (state)
+        {
             case GameState.NULL:
                 break;
             case GameState.MENU:
-                if(OnMenuEnter!=null) OnMenuEnter(state, prev);
+                if (OnMenuEnter != null) OnMenuEnter(state, prev);
                 break;
             case GameState.PLAY:
                 if (OnPlayEnter != null) OnPlayEnter(state, prev);
@@ -80,13 +116,17 @@ public class GameManager : SingletonBehaviour<GameManager>
                 Application.Quit();
                 if (OnEndEnter != null) OnEndEnter(state, prev);
                 break;
+            case GameState.TRANSITION:
+                if (OnTransitionEnter != null) OnTransitionEnter(state, prev);
+                break;
             default:
                 break;
         }
         ExitState(prev);
     }
     private void ExitState(GameState state) {
-        switch (state) {
+        switch (state)
+        {
             case GameState.NULL:
                 break;
             case GameState.MENU:
@@ -98,6 +138,9 @@ public class GameManager : SingletonBehaviour<GameManager>
             case GameState.END:
                 if (OnEndExit != null) OnEndExit(state);
                 break;
+            case GameState.TRANSITION:
+                if (OnTransitionExit != null) OnTransitionExit(state);
+                break;
             default:
                 break;
         }
@@ -106,6 +149,7 @@ public class GameManager : SingletonBehaviour<GameManager>
 public enum GameState {
     NULL,
     MENU,
+    TRANSITION,
     PLAY,
     END
 }

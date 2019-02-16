@@ -45,3 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelPrefab: {fileID: 4433804813883895216, guid: b76aecebd38995a4697bf9e9a8bfdf0c,
     type: 3}
+  cutScenePrefab: {fileID: 1082388002259539395, guid: 5b7502d73d241be4d926ac89aee92ceb,
+    type: 3}
+  playerPrefab: {fileID: 6307016185563692356, guid: be0a794796276d84797453166d3b2872,
+    type: 3}

@@ -20,6 +20,7 @@ public class PumpLocator : MonoBehaviour
         if (mr == null)
             GetComponentInChildren<MeshRenderer>();
         mat = mr.material;
+        mat.SetVector("_EnergySpeed", new Vector4(10, -10, -10, 10));
         SetThisOff();
     }
     public static void SetOn(ResourceColor type) {
@@ -32,11 +33,15 @@ public class PumpLocator : MonoBehaviour
         return locators[type].mat;
     }
     public void SetThisOn() {
-        mat.SetVector("_EnergyPower", Vector4.one);
+        mat.SetVector("_EnergyPower", Vector4.one*3);
         generatorToggle.PlayOneShot(successfulOn, 1.0f);
     }
     public void SetThisOff() {
         mat.SetVector("_EnergyPower", Vector4.zero);
         generatorToggle.PlayOneShot(successfulOff, 1.0f);
+    }
+    public void OnDisable()
+    {
+        locators.Remove(type);
     }
 }

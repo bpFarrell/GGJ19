@@ -65,7 +65,9 @@
 				float4 axisTable = float4(
 					0,2,0,2
 				);
-
+				float4 align = float4(
+					0, 3.141529, 3.141529, 0
+				);
 
 				fixed4 region = fixed4(
 				abs(i.localPos.x)>abs(i.localPos.z)&i.localPos.x<0,
@@ -74,14 +76,14 @@
 				abs(i.localPos.x)<abs(i.localPos.z)&i.localPos.z<0);
 				float power = 0;
 				for(int x = 0;x<4;x++){
-					power += sin(_EnergySpeed[x]*_Time.x*10+i.localPos[axisTable[x]])*region[x]*_EnergyPower[x];
+					power += sin(_EnergySpeed[x]*_Time.x*10 + align[x]+i.localPos[axisTable[x]])*region[x]*_EnergyPower[x];
 
 				}
 				//int temp = 2;
 				//test = sin(dirs[temp]*_Time.x*20+i.localPos[axisTable[temp]])*region[temp];
 				power=power*0.5+0.5;
 				power = floor(power*7.99)*0.19;
-				//return fixed4(i.localPos.xyzz);
+				//return fixed4(1,1,1,1)*power;
 
 
                 fixed4 col = tex2D(_MainTex, i.uv);
