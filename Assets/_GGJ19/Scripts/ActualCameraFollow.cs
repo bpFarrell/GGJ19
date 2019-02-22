@@ -29,7 +29,8 @@ public class ActualCameraFollow : MonoBehaviour
     }
     private void OnEnable()
     {
-        defaultRotation = transform.rotation;
+        //defaultRotation = transform.rotation;
+        defaultRotation = Quaternion.Euler(90, 0, 0);
 
         if (cutSceneManager == null) cutSceneManager = CutSceneManager.Instance;
         if (panoutTarget == null) panoutTarget = CutSceneManager.Instance.transform.Find("PanOutTarget");
@@ -40,8 +41,7 @@ public class ActualCameraFollow : MonoBehaviour
 
     Vector3 GetRoomCenter()
     {
-
-        if (player.currentRoom != null) return player.currentRoom.bounds.center;
+        if (player != null && player.currentRoom != null) return player.currentRoom.bounds.center;
         return targetObject.position;
 
         //-----old, when rooms don't butt right up against each other:

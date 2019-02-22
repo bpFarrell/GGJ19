@@ -51,11 +51,6 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
     {
         GameManager.Instance.OnPlayEnter += ReallyStart;
         hull.SetActive(false);
-    }
-
-    void ReallyStart(GameState state, GameState previous)
-    {
-        gameState = CutSceneState.NormalPlay;
 
         //set up pan stuff
         panAnimator = panOutTarget.gameObject.GetComponent<Animator>();
@@ -63,15 +58,31 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
         panOutAnimation = animController.animationClips[0];
 
         //docking
-        scaffoldAnimator = scaffold.GetComponent<Animator>();
-        scaffoldSpeed = scaffoldAnimator.speed;
         hullMat = hull.GetComponent<MeshRenderer>().material;
 
-        //other ship
+        scaffoldAnimator = scaffold.GetComponent<Animator>();
+        scaffoldSpeed = scaffoldAnimator.speed;
+        
         otherShipAnimator = otherShip.GetComponent<Animator>();
+        
+    }
+
+    void ReallyStart(GameState state, GameState previous)
+    {
+        //gameState = CutSceneState.NormalPlay;
+
+       
+        
+        //other ship
         flyOffDuration = 2;
 
         GameManager.Instance.OnPlayEnter -= ReallyStart;
+    }
+
+    private void OnEnable()
+    {
+        ChangeState(CutSceneState.ShipDocking);
+
     }
 
     void Update()
@@ -123,6 +134,7 @@ public class CutSceneManager : SingletonBehaviour<CutSceneManager>
             Color color = hullMat.color;
             color.a = Mathf.Clamp((panOutTime / panOutDuration - .2f) * 5/4f, 0, 1);
             hullMat.color = color;
+            hullMat.SetFloat("_Glossiness", color.a);
         }
 
 
