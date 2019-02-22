@@ -99,9 +99,12 @@ public class CanvasManager : SingletonBehaviour<CanvasManager>
         interimColor.a = Mathf.Sin(Time.time*1.8f)* .4f + .6f;
         submit.color = interimColor;
     }
-    private readonly Vector3 CAMERAORIGIN = new Vector3(0, 6, 0);
+    //private readonly Vector3 CAMERAORIGIN = new Vector3(0, 6, 0);
+    private readonly Vector3 CAMERAORIGIN = new Vector3(-11.1f, 23.9f, -22.1f);
+    private readonly Quaternion CAMERAORIGINROT = Quaternion.Euler(new Vector3(43.4f, -.379f, 0));
     private void TravelToOrigin() {
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, CAMERAORIGIN, 0.025f);
+        Camera.main.transform.rotation = Quaternion.Slerp(Camera.main.transform.rotation, CAMERAORIGINROT, .025f);
         if((CAMERAORIGIN - Camera.main.transform.position).magnitude <= 0.5f) { // At destination
             GameManager.Instance.state = GameState.PLAY;
             CameraEffectDriver thing = Camera.main.GetComponent<CameraEffectDriver>();
